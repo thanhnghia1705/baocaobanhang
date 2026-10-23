@@ -1,0 +1,6 @@
+{
+  "name": "Dashboard Bán Hàng Tự Động",
+  "description": "Tự động phân tích và tạo dashboard bán hàng tương tác từ file Excel/CSV với 41 trường nghiệp vụ, bộ lọc chéo thời gian thực, phân cấp giám sát và kiểm toán chất lượng dữ liệu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,6 @@
+{
+  "summary":  "Kế hoạch kiến trúc và triển khai ứng dụng Dashboard bán hàng tự động từ file Excel/CSV: xử lý tệp tin linh hoạt, chuẩn hóa 41 cột dữ liệu, cross-filtering thời gian thực, phân cấp Giám sát - Nhân viên - Khách hàng, kiểm toán chất lượng dữ liệu, bộ dữ liệu đối soát chuẩn (4.601 dòng, 2.58 tỷ VNĐ) và xuất báo cáo XLSX/CSV/Print.",
+  "updatedAt":  "2026-10-23T05:06:18.695019929Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}
