@@ -17,6 +17,7 @@ import { OverviewTab } from './components/tabs/OverviewTab';
 import { TeamTab } from './components/tabs/TeamTab';
 import { ProductGeoTab } from './components/tabs/ProductGeoTab';
 import { OperationsTab } from './components/tabs/OperationsTab';
+import { AreaDetailTab } from './components/tabs/AreaDetailTab';
 import { RawDataTab } from './components/tabs/RawDataTab';
 
 const DashboardContent: React.FC = () => {
@@ -46,6 +47,7 @@ const DashboardContent: React.FC = () => {
         {activeTab === 'team' && <TeamTab />}
         {activeTab === 'product_geo' && <ProductGeoTab />}
         {activeTab === 'operations' && <OperationsTab />}
+        {activeTab === 'area_detail' && <AreaDetailTab />}
         {activeTab === 'raw_data' && <RawDataTab />}
       </main>
 

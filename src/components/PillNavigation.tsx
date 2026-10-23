@@ -4,6 +4,7 @@ import {
   Users2,
   PackageSearch,
   Truck,
+  MapPin,
   TableProperties,
 } from 'lucide-react';
 import { useSalesData } from '../context/SalesDataContext';
@@ -20,7 +21,8 @@ const TABS: TabItem[] = [
   { id: 'team', label: '2. Đội ngũ & Giám sát', icon: Users2 },
   { id: 'product_geo', label: '3. Sản phẩm & Địa bàn', icon: PackageSearch },
   { id: 'operations', label: '4. Vận hành', icon: Truck },
-  { id: 'raw_data', label: '5. Dữ liệu & Kiểm toán', icon: TableProperties },
+  { id: 'area_detail', label: '5. Chi tiết khu vực (Review Giám sát)', icon: MapPin },
+  { id: 'raw_data', label: '6. Dữ liệu & Kiểm toán', icon: TableProperties },
 ];
 
 export const PillNavigation: React.FC = () => {
