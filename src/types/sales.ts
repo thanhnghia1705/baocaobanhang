@@ -47,7 +47,7 @@ export interface NormalizedRecord {
   unitDirector: string; // Giám đốc đơn vị
 }
 
-export type TabType = 'overview' | 'team' | 'product_geo' | 'operations' | 'area_detail' | 'raw_data';
+export type TabType = 'overview' | 'team' | 'product_geo' | 'operations' | 'area_detail' | 'product_detail' | 'raw_data';
 
 export type DateFilterPreset = 'all' | '7d' | '14d' | '30d' | 'this_month' | 'custom';
 
