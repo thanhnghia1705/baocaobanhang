@@ -18,6 +18,9 @@ import {
   CheckCircle2,
   ShieldCheck,
   UserCheck,
+  CheckSquare,
+  Square,
+  RotateCcw,
 } from 'lucide-react';
 import { useSalesData } from '../../context/SalesDataContext';
 import {
@@ -28,13 +31,13 @@ import {
 } from '../../utils/formatters';
 
 export const ProductDetailTab: React.FC = () => {
-  const { filteredRecords, uniqueValues, aggregatedKPIs } = useSalesData();
+  const { filteredRecords, uniqueValues } = useSalesData();
 
   // All available unique products
   const allProducts = uniqueValues.itemCodes;
 
   // Selected products state (set of item codes)
-  // By default, select the top 3 selling products so the user sees data immediately
+  // Default to first 3 products
   const [selectedProductCodes, setSelectedProductCodes] = useState<string[]>(() => {
     return allProducts.slice(0, 3).map((p) => p.code);
   });
@@ -53,18 +56,42 @@ export const ProductDetailTab: React.FC = () => {
     );
   }, [allProducts, productSearch]);
 
+  // Toggle single product selection
   const toggleProduct = (code: string) => {
-    if (selectedProductCodes.includes(code)) {
-      if (selectedProductCodes.length > 1) {
-        setSelectedProductCodes(selectedProductCodes.filter((c) => c !== code));
+    setSelectedProductCodes((prev) => {
+      if (prev.includes(code)) {
+        return prev.filter((c) => c !== code);
+      } else {
+        return [...prev, code];
       }
-    } else {
-      setSelectedProductCodes([...selectedProductCodes, code]);
-    }
+    });
+  };
+
+  // Bulk Actions
+  const selectAll = () => {
+    setSelectedProductCodes(allProducts.map((p) => p.code));
+  };
+
+  const deselectAll = () => {
+    setSelectedProductCodes([]);
+  };
+
+  const selectCurrentFiltered = () => {
+    const codesToAdd = filteredProductOptions.map((p) => p.code);
+    setSelectedProductCodes((prev) => Array.from(new Set([...prev, ...codesToAdd])));
+  };
+
+  const deselectCurrentFiltered = () => {
+    const codesToRemove = new Set(filteredProductOptions.map((p) => p.code));
+    setSelectedProductCodes((prev) => prev.filter((c) => !codesToRemove.has(c)));
+  };
+
+  const invertSelection = () => {
+    const currentSet = new Set(selectedProductCodes);
+    setSelectedProductCodes(allProducts.filter((p) => !currentSet.has(p.code)).map((p) => p.code));
   };
 
   const selectTop5 = () => {
-    // Find top 5 by revenue from filtered records
     const revMap = new Map<string, number>();
     filteredRecords.forEach((r) => {
       revMap.set(r.itemCode, (revMap.get(r.itemCode) || 0) + r.revenueVAT);
@@ -88,8 +115,16 @@ export const ProductDetailTab: React.FC = () => {
     setSelectedProductCodes(sorted.length > 0 ? sorted : allProducts.slice(0, 10).map((p) => p.code));
   };
 
-  const selectAll = () => {
-    setSelectedProductCodes(allProducts.map((p) => p.code));
+  const selectTop20 = () => {
+    const revMap = new Map<string, number>();
+    filteredRecords.forEach((r) => {
+      revMap.set(r.itemCode, (revMap.get(r.itemCode) || 0) + r.revenueVAT);
+    });
+    const sorted = Array.from(revMap.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20)
+      .map(([code]) => code);
+    setSelectedProductCodes(sorted.length > 0 ? sorted : allProducts.slice(0, 20).map((p) => p.code));
   };
 
   // Filter dataset to ONLY rows matching selected products
@@ -503,98 +538,194 @@ export const ProductDetailTab: React.FC = () => {
         </div>
       </div>
 
-      {/* Product Checkbox Selection Box */}
+      {/* Product Selection Workspace with Robust Multi-Select Tools */}
       <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs space-y-4">
+        {/* Header & Quick Action Buttons */}
         <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
-              <Check className="w-4 h-4 stroke-[3]" />
+            <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+              <CheckSquare className="w-5 h-5 text-emerald-700" />
             </div>
             <div>
               <h3 className="text-sm font-bold text-slate-900">
-                Tích chọn sản phẩm cần phân tích ({selectedProductCodes.length}/{allProducts.length})
+                Tích chọn sản phẩm cần xem ({selectedProductCodes.length}/{allProducts.length} SKU)
               </h3>
               <p className="text-[11px] text-slate-500">
-                Chọn sản phẩm đơn lẻ hoặc kết hợp nhiều sản phẩm cùng lúc
+                Bấm vào từng ô để tích chọn/bỏ chọn, hoặc dùng các nút thao tác hàng loạt bên cạnh
               </p>
             </div>
           </div>
 
-          {/* Quick select buttons */}
-          <div className="flex items-center gap-2">
+          {/* Bulk select buttons */}
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={selectAll}
+              className="px-3 py-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-colors shadow-2xs"
+            >
+              ✓ Chọn tất cả ({allProducts.length})
+            </button>
+            <button
+              type="button"
+              onClick={deselectAll}
+              className="px-3 py-1.5 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl transition-colors shadow-2xs"
+            >
+              ✕ Bỏ chọn tất cả
+            </button>
+            <button
+              type="button"
+              onClick={invertSelection}
+              className="px-3 py-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors shadow-2xs"
+            >
+              Đảo ngược chọn
+            </button>
             <button
               type="button"
               onClick={selectTop5}
-              className="px-2.5 py-1 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+              className="px-3 py-1.5 text-xs font-bold text-slate-800 bg-white border border-slate-300 hover:bg-slate-50 rounded-xl transition-colors shadow-2xs"
             >
-              Chọn Top 5
+              Top 5 doanh số
             </button>
             <button
               type="button"
               onClick={selectTop10}
-              className="px-2.5 py-1 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+              className="px-3 py-1.5 text-xs font-bold text-slate-800 bg-white border border-slate-300 hover:bg-slate-50 rounded-xl transition-colors shadow-2xs"
             >
-              Chọn Top 10
+              Top 10 doanh số
             </button>
             <button
               type="button"
-              onClick={selectAll}
-              className="px-2.5 py-1 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors"
+              onClick={selectTop20}
+              className="px-3 py-1.5 text-xs font-bold text-slate-800 bg-white border border-slate-300 hover:bg-slate-50 rounded-xl transition-colors shadow-2xs"
             >
-              Chọn tất cả
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedProductCodes([allProducts[0]?.code || ''])}
-              className="px-2.5 py-1 text-xs font-bold text-rose-700 hover:text-rose-800 hover:underline transition-colors"
-            >
-              Đặt lại
+              Top 20 doanh số
             </button>
           </div>
         </div>
 
-        {/* Search input for products */}
-        <div className="relative">
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
-          <input
-            type="text"
-            placeholder="Tìm theo mã hoặc tên sản phẩm để tích chọn..."
-            value={productSearch}
-            onChange={(e) => setProductSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 font-medium"
-          />
+        {/* Search input for products with "Select All Found" button */}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="relative flex-1 min-w-[280px]">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" />
+            <input
+              type="text"
+              placeholder="Tìm theo mã hoặc tên sản phẩm để tích chọn..."
+              value={productSearch}
+              onChange={(e) => setProductSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 font-medium"
+            />
+            {productSearch && (
+              <button
+                type="button"
+                onClick={() => setProductSearch('')}
+                className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          {productSearch && (
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={selectCurrentFiltered}
+                className="px-3 py-1.5 text-xs font-bold text-emerald-800 bg-emerald-100 hover:bg-emerald-200 rounded-xl transition-colors"
+              >
+                + Chọn {filteredProductOptions.length} sản phẩm tìm thấy
+              </button>
+              <button
+                type="button"
+                onClick={deselectCurrentFiltered}
+                className="px-3 py-1.5 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+              >
+                - Bỏ chọn {filteredProductOptions.length} sản phẩm này
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Checkbox grid with scroll */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-48 overflow-y-auto pr-1">
-          {filteredProductOptions.map((p) => {
-            const isChecked = selectedProductCodes.includes(p.code);
+        {/* Interactive Checkbox Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-56 overflow-y-auto pr-1">
+          {filteredProductOptions.length === 0 ? (
+            <div className="col-span-full py-8 text-center text-xs text-slate-400 font-medium">
+              Không tìm thấy sản phẩm nào khớp với từ khóa "{productSearch}"
+            </div>
+          ) : (
+            filteredProductOptions.map((p) => {
+              const isChecked = selectedProductCodes.includes(p.code);
 
-            return (
-              <label
-                key={p.code}
-                className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition-all ${
-                  isChecked
-                    ? 'border-emerald-500 bg-emerald-50/60 ring-1 ring-emerald-500 shadow-2xs'
-                    : 'border-slate-200 hover:bg-slate-50/80 hover:border-slate-300'
-                }`}
-              >
-                <div className="truncate pr-2">
-                  <p className="text-xs font-bold text-slate-900 truncate">{p.name}</p>
-                  <p className="text-[10px] text-slate-400 font-mono">{p.code}</p>
-                </div>
+              return (
                 <div
-                  className={`w-4 h-4 rounded-md flex items-center justify-center shrink-0 border transition-colors ${
+                  key={p.code}
+                  onClick={() => toggleProduct(p.code)}
+                  role="checkbox"
+                  aria-checked={isChecked}
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === ' ' || e.key === 'Enter') {
+                      e.preventDefault();
+                      toggleProduct(p.code);
+                    }
+                  }}
+                  className={`flex items-center justify-between p-3 rounded-2xl border cursor-pointer select-none transition-all duration-150 ${
                     isChecked
-                      ? 'bg-emerald-600 border-emerald-600 text-white'
-                      : 'border-slate-300 bg-white'
+                      ? 'border-emerald-500 bg-emerald-50/80 ring-2 ring-emerald-400 shadow-xs'
+                      : 'border-slate-200 bg-white hover:bg-slate-50/90 hover:border-slate-300'
                   }`}
                 >
-                  {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
+                  <div className="truncate pr-2">
+                    <p className={`text-xs font-bold truncate ${isChecked ? 'text-emerald-950 font-extrabold' : 'text-slate-900'}`}>
+                      {p.name}
+                    </p>
+                    <p className="text-[10px] text-slate-400 font-mono mt-0.5">{p.code}</p>
+                  </div>
+
+                  <div
+                    className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 border transition-all ${
+                      isChecked
+                        ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
+                        : 'border-slate-300 bg-white hover:border-slate-400'
+                    }`}
+                  >
+                    {isChecked ? (
+                      <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    ) : (
+                      <div className="w-2 h-2 rounded bg-transparent" />
+                    )}
+                  </div>
                 </div>
-              </label>
-            );
-          })}
+              );
+            })
+          )}
+        </div>
+
+        {/* Active Selection Strip */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-slate-700">Đang chọn ({selectedProductCodes.length}):</span>
+            {selectedProductCodes.length === 0 ? (
+              <span className="text-rose-600 font-bold bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200">
+                ⚠️ Chưa chọn sản phẩm nào. Vui lòng tích chọn ở trên!
+              </span>
+            ) : (
+              <span className="text-slate-500">
+                {selectedProductCodes.length > 5
+                  ? `${selectedProductCodes.slice(0, 5).join(', ')} ... và ${selectedProductCodes.length - 5} sản phẩm khác`
+                  : selectedProductCodes.join(', ')}
+              </span>
+            )}
+          </div>
+
+          {selectedProductCodes.length > 0 && (
+            <button
+              type="button"
+              onClick={deselectAll}
+              className="text-rose-600 hover:text-rose-700 font-bold hover:underline"
+            >
+              Xóa tất cả lựa chọn
+            </button>
+          )}
         </div>
       </div>
 
@@ -647,229 +778,248 @@ export const ProductDetailTab: React.FC = () => {
           </div>
         </div>
 
-        {/* View 1: Breakdown by SUPERVISOR */}
-        {activeViewTab === 'supervisor' && (
-          <div className="space-y-4">
-            <div className="border border-slate-200 rounded-2xl overflow-hidden max-h-[520px] overflow-y-auto">
-              <table className="w-full text-left text-xs whitespace-nowrap">
-                <thead className="bg-slate-100/90 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 backdrop-blur-xs">
-                  <tr>
-                    <th className="py-3 px-3.5 w-12 text-center">#</th>
-                    <th className="py-3 px-4">Giám sát phụ trách</th>
-                    <th className="py-3 px-4">Khu vực / Đơn vị</th>
-                    <th className="py-3 px-4 text-center">Số NV có bán</th>
-                    <th className="py-3 px-4 text-right">Nhà thuốc lấy hàng (Ko trùng)</th>
-                    <th className="py-3 px-4 text-right">Số lượng sản phẩm</th>
-                    <th className="py-3 px-4 text-right">Doanh số sau VAT</th>
-                    <th className="py-3 px-4 text-right">Tỷ trọng đóng góp</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-800">
-                  {supervisorBreakdown.list.length === 0 ? (
-                    <tr>
-                      <td colSpan={8} className="py-10 text-center text-slate-400 font-medium">
-                        Không có dữ liệu cho các sản phẩm đang chọn
-                      </td>
-                    </tr>
-                  ) : (
-                    supervisorBreakdown.list.map((s, idx) => (
-                      <tr key={s.supervisor} className="hover:bg-slate-50/90 transition-colors">
-                        <td className="py-3 px-3.5 text-center text-slate-400 font-mono text-[11px]">
-                          {idx + 1}
-                        </td>
-                        <td className="py-3 px-4 font-bold text-slate-900 text-sm">
-                          {s.supervisor}
-                        </td>
-                        <td className="py-3 px-4 text-slate-600 font-medium">
-                          <p>{s.areaDirector}</p>
-                          <p className="text-[10px] text-slate-400">{s.unitDirector}</p>
-                        </td>
-                        <td className="py-3 px-4 text-center">
-                          <span className="font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded-md">
-                            {s.activeRepsCount} NV
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-emerald-800 tabular-nums">
-                          {formatNumber(s.uniquePartnersCount)} Nhà thuốc
-                        </td>
-                        <td className="py-3 px-4 text-right font-mono font-semibold text-slate-900 tabular-nums">
-                          {formatNumber(s.qty)}
-                        </td>
-                        <td className="py-3 px-4 text-right font-mono font-black text-slate-950 tabular-nums">
-                          {formatVND(s.revenue)}
-                        </td>
-                        <td className="py-3 px-4 text-right">
-                          <span className="font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md">
-                            {s.share.toFixed(1).replace('.', ',')}%
-                          </span>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
+        {selectedProductCodes.length === 0 ? (
+          <div className="p-12 text-center text-slate-400 space-y-3">
+            <Boxes className="w-10 h-10 text-slate-300 mx-auto" />
+            <p className="text-sm font-bold text-slate-700">Chưa có sản phẩm nào được chọn</p>
+            <p className="text-xs text-slate-500 max-w-md mx-auto">
+              Hãy tích chọn ít nhất một sản phẩm ở khung phía trên (hoặc bấm nút "Top 5 doanh số", "Chọn tất cả") để đổ ra dữ liệu bóc tách chi tiết.
+            </p>
+            <button
+              type="button"
+              onClick={selectTop5}
+              className="mt-2 px-4 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-xl transition-colors shadow-xs"
+            >
+              Chọn nhanh Top 5 sản phẩm
+            </button>
           </div>
-        )}
-
-        {/* View 2: Breakdown by SALES REP */}
-        {activeViewTab === 'staff' && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="relative">
-                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
-                <input
-                  type="text"
-                  placeholder="Tìm nhân viên, giám sát..."
-                  value={staffSearch}
-                  onChange={(e) => setStaffSearch(e.target.value)}
-                  className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 w-64 font-medium"
-                />
+        ) : (
+          <>
+            {/* View 1: Breakdown by SUPERVISOR */}
+            {activeViewTab === 'supervisor' && (
+              <div className="space-y-4">
+                <div className="border border-slate-200 rounded-2xl overflow-hidden max-h-[520px] overflow-y-auto">
+                  <table className="w-full text-left text-xs whitespace-nowrap">
+                    <thead className="bg-slate-100/90 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 backdrop-blur-xs">
+                      <tr>
+                        <th className="py-3 px-3.5 w-12 text-center">#</th>
+                        <th className="py-3 px-4">Giám sát phụ trách</th>
+                        <th className="py-3 px-4">Khu vực / Đơn vị</th>
+                        <th className="py-3 px-4 text-center">Số NV có bán</th>
+                        <th className="py-3 px-4 text-right">Nhà thuốc lấy hàng (Ko trùng)</th>
+                        <th className="py-3 px-4 text-right">Số lượng sản phẩm</th>
+                        <th className="py-3 px-4 text-right">Doanh số sau VAT</th>
+                        <th className="py-3 px-4 text-right">Tỷ trọng đóng góp</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-slate-800">
+                      {supervisorBreakdown.list.length === 0 ? (
+                        <tr>
+                          <td colSpan={8} className="py-10 text-center text-slate-400 font-medium">
+                            Không có dữ liệu cho các sản phẩm đang chọn
+                          </td>
+                        </tr>
+                      ) : (
+                        supervisorBreakdown.list.map((s, idx) => (
+                          <tr key={s.supervisor} className="hover:bg-slate-50/90 transition-colors">
+                            <td className="py-3 px-3.5 text-center text-slate-400 font-mono text-[11px]">
+                              {idx + 1}
+                            </td>
+                            <td className="py-3 px-4 font-bold text-slate-900 text-sm">
+                              {s.supervisor}
+                            </td>
+                            <td className="py-3 px-4 text-slate-600 font-medium">
+                              <p>{s.areaDirector}</p>
+                              <p className="text-[10px] text-slate-400">{s.unitDirector}</p>
+                            </td>
+                            <td className="py-3 px-4 text-center">
+                              <span className="font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded-md">
+                                {s.activeRepsCount} NV
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 text-right font-mono font-bold text-emerald-800 tabular-nums">
+                              {formatNumber(s.uniquePartnersCount)} Nhà thuốc
+                            </td>
+                            <td className="py-3 px-4 text-right font-mono font-semibold text-slate-900 tabular-nums">
+                              {formatNumber(s.qty)}
+                            </td>
+                            <td className="py-3 px-4 text-right font-mono font-black text-slate-950 tabular-nums">
+                              {formatVND(s.revenue)}
+                            </td>
+                            <td className="py-3 px-4 text-right">
+                              <span className="font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md">
+                                {s.share.toFixed(1).replace('.', ',')}%
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
+            )}
 
-              <span className="text-xs text-slate-500 font-medium">
-                {displayedStaff.length} Nhân viên có phát sinh doanh số sản phẩm này
-              </span>
-            </div>
+            {/* View 2: Breakdown by SALES REP */}
+            {activeViewTab === 'staff' && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="relative">
+                    <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+                    <input
+                      type="text"
+                      placeholder="Tìm nhân viên, giám sát..."
+                      value={staffSearch}
+                      onChange={(e) => setStaffSearch(e.target.value)}
+                      className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 w-64 font-medium"
+                    />
+                  </div>
 
-            <div className="border border-slate-200 rounded-2xl overflow-hidden max-h-[520px] overflow-y-auto">
-              <table className="w-full text-left text-xs whitespace-nowrap">
-                <thead className="bg-slate-100/90 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 backdrop-blur-xs">
-                  <tr>
-                    <th className="py-3 px-3.5 w-12 text-center">#</th>
-                    <th className="py-3 px-4">Nhân viên bán hàng</th>
-                    <th className="py-3 px-4">Giám sát phụ trách</th>
-                    <th className="py-3 px-4">Trưởng nhóm</th>
-                    <th className="py-3 px-4 text-right">Nhà thuốc lấy hàng (Ko trùng)</th>
-                    <th className="py-3 px-4 text-right">Số lượng sản phẩm</th>
-                    <th className="py-3 px-4 text-right">Doanh số sau VAT</th>
-                    <th className="py-3 px-4 text-right">Tỷ trọng</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-800">
-                  {displayedStaff.length === 0 ? (
-                    <tr>
-                      <td colSpan={8} className="py-10 text-center text-slate-400 font-medium">
-                        Không tìm thấy nhân viên phù hợp
-                      </td>
-                    </tr>
-                  ) : (
-                    displayedStaff.map((r, idx) => (
-                      <tr key={r.rep} className="hover:bg-slate-50/90 transition-colors">
-                        <td className="py-2.5 px-3.5 text-center text-slate-400 font-mono text-[11px]">
-                          {idx + 1}
-                        </td>
-                        <td className="py-2.5 px-4 font-bold text-slate-900">
-                          {r.rep}
-                        </td>
-                        <td className="py-2.5 px-4 font-medium text-slate-700">
-                          {r.supervisor}
-                        </td>
-                        <td className="py-2.5 px-4 text-slate-500">
-                          {r.teamLead || '—'}
-                        </td>
-                        <td className="py-2.5 px-4 text-right font-mono font-bold text-emerald-800 tabular-nums">
-                          {formatNumber(r.uniquePartnersCount)} Nhà thuốc
-                        </td>
-                        <td className="py-2.5 px-4 text-right font-mono font-semibold text-slate-900 tabular-nums">
-                          {formatNumber(r.qty)}
-                        </td>
-                        <td className="py-2.5 px-4 text-right font-mono font-black text-slate-950 tabular-nums">
-                          {formatVND(r.revenue)}
-                        </td>
-                        <td className="py-2.5 px-4 text-right">
-                          <span className="font-bold text-slate-700">
-                            {r.share.toFixed(1).replace('.', ',')}%
-                          </span>
-                        </td>
+                  <span className="text-xs text-slate-500 font-medium">
+                    {displayedStaff.length} Nhân viên có phát sinh doanh số sản phẩm này
+                  </span>
+                </div>
+
+                <div className="border border-slate-200 rounded-2xl overflow-hidden max-h-[520px] overflow-y-auto">
+                  <table className="w-full text-left text-xs whitespace-nowrap">
+                    <thead className="bg-slate-100/90 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 backdrop-blur-xs">
+                      <tr>
+                        <th className="py-3 px-3.5 w-12 text-center">#</th>
+                        <th className="py-3 px-4">Nhân viên bán hàng</th>
+                        <th className="py-3 px-4">Giám sát phụ trách</th>
+                        <th className="py-3 px-4">Trưởng nhóm</th>
+                        <th className="py-3 px-4 text-right">Nhà thuốc lấy hàng (Ko trùng)</th>
+                        <th className="py-3 px-4 text-right">Số lượng sản phẩm</th>
+                        <th className="py-3 px-4 text-right">Doanh số sau VAT</th>
+                        <th className="py-3 px-4 text-right">Tỷ trọng</th>
                       </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* View 3: List of PHARMACIES taking these products (NON-DUPLICATED) */}
-        {activeViewTab === 'pharmacies' && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="relative">
-                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
-                <input
-                  type="text"
-                  placeholder="Tìm nhà thuốc, tỉnh thành, nhân viên..."
-                  value={pharmacySearch}
-                  onChange={(e) => setPharmacySearch(e.target.value)}
-                  className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 w-72 font-medium"
-                />
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-slate-800">
+                      {displayedStaff.length === 0 ? (
+                        <tr>
+                          <td colSpan={8} className="py-10 text-center text-slate-400 font-medium">
+                            Không tìm thấy nhân viên phù hợp
+                          </td>
+                        </tr>
+                      ) : (
+                        displayedStaff.map((r, idx) => (
+                          <tr key={r.rep} className="hover:bg-slate-50/90 transition-colors">
+                            <td className="py-2.5 px-3.5 text-center text-slate-400 font-mono text-[11px]">
+                              {idx + 1}
+                            </td>
+                            <td className="py-2.5 px-4 font-bold text-slate-900">
+                              {r.rep}
+                            </td>
+                            <td className="py-2.5 px-4 font-medium text-slate-700">
+                              {r.supervisor}
+                            </td>
+                            <td className="py-2.5 px-4 text-slate-500">
+                              {r.teamLead || '—'}
+                            </td>
+                            <td className="py-2.5 px-4 text-right font-mono font-bold text-emerald-800 tabular-nums">
+                              {formatNumber(r.uniquePartnersCount)} Nhà thuốc
+                            </td>
+                            <td className="py-2.5 px-4 text-right font-mono font-semibold text-slate-900 tabular-nums">
+                              {formatNumber(r.qty)}
+                            </td>
+                            <td className="py-2.5 px-4 text-right font-mono font-black text-slate-950 tabular-nums">
+                              {formatVND(r.revenue)}
+                            </td>
+                            <td className="py-2.5 px-4 text-right">
+                              <span className="font-bold text-slate-700">
+                                {r.share.toFixed(1).replace('.', ',')}%
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
+            )}
 
-              <span className="text-xs text-slate-500 font-medium">
-                {displayedPharmacies.length} Nhà thuốc duy nhất đã nhập các sản phẩm này
-              </span>
-            </div>
+            {/* View 3: List of PHARMACIES taking these products (NON-DUPLICATED) */}
+            {activeViewTab === 'pharmacies' && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="relative">
+                    <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+                    <input
+                      type="text"
+                      placeholder="Tìm nhà thuốc, tỉnh thành, nhân viên..."
+                      value={pharmacySearch}
+                      onChange={(e) => setPharmacySearch(e.target.value)}
+                      className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 w-72 font-medium"
+                    />
+                  </div>
 
-            <div className="border border-slate-200 rounded-2xl overflow-x-auto max-h-[520px] overflow-y-auto">
-              <table className="w-full text-left text-xs whitespace-nowrap">
-                <thead className="bg-slate-100/90 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 backdrop-blur-xs">
-                  <tr>
-                    <th className="py-3 px-3.5 w-12 text-center">#</th>
-                    <th className="py-3 px-4">Mã nhà thuốc</th>
-                    <th className="py-3 px-4">Tên Nhà thuốc</th>
-                    <th className="py-3 px-4">Tỉnh / Thành</th>
-                    <th className="py-3 px-4">Phường / Xã</th>
-                    <th className="py-3 px-4 text-right">Số lượng lấy</th>
-                    <th className="py-3 px-4 text-right">Doanh số sau VAT</th>
-                    <th className="py-3 px-4">Nhân viên phụ trách</th>
-                    <th className="py-3 px-4">Giám sát</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-800">
-                  {displayedPharmacies.length === 0 ? (
-                    <tr>
-                      <td colSpan={9} className="py-10 text-center text-slate-400 font-medium">
-                        Không tìm thấy nhà thuốc phù hợp
-                      </td>
-                    </tr>
-                  ) : (
-                    displayedPharmacies.map((p, idx) => (
-                      <tr key={p.partnerId} className="hover:bg-slate-50/90 transition-colors">
-                        <td className="py-2.5 px-3.5 text-center text-slate-400 font-mono text-[11px]">
-                          {idx + 1}
-                        </td>
-                        <td className="py-2.5 px-4 font-mono font-bold text-emerald-800">
-                          {p.partnerId}
-                        </td>
-                        <td className="py-2.5 px-4 font-bold text-slate-900">
-                          {p.partnerName}
-                        </td>
-                        <td className="py-2.5 px-4 font-medium text-slate-700">
-                          {p.province}
-                        </td>
-                        <td className="py-2.5 px-4 text-slate-500 text-[11px]">
-                          {p.ward}
-                        </td>
-                        <td className="py-2.5 px-4 text-right font-mono font-bold text-slate-900 tabular-nums">
-                          {formatNumber(p.qty)}
-                        </td>
-                        <td className="py-2.5 px-4 text-right font-mono font-black text-emerald-950 tabular-nums">
-                          {formatVND(p.revenue)}
-                        </td>
-                        <td className="py-2.5 px-4 text-slate-700 font-medium truncate max-w-[150px]">
-                          {p.reps}
-                        </td>
-                        <td className="py-2.5 px-4 text-slate-500 truncate max-w-[150px]">
-                          {p.supervisors}
-                        </td>
+                  <span className="text-xs text-slate-500 font-medium">
+                    {displayedPharmacies.length} Nhà thuốc duy nhất đã nhập các sản phẩm này
+                  </span>
+                </div>
+
+                <div className="border border-slate-200 rounded-2xl overflow-x-auto max-h-[520px] overflow-y-auto">
+                  <table className="w-full text-left text-xs whitespace-nowrap">
+                    <thead className="bg-slate-100/90 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 backdrop-blur-xs">
+                      <tr>
+                        <th className="py-3 px-3.5 w-12 text-center">#</th>
+                        <th className="py-3 px-4">Mã nhà thuốc</th>
+                        <th className="py-3 px-4">Tên Nhà thuốc</th>
+                        <th className="py-3 px-4">Tỉnh / Thành</th>
+                        <th className="py-3 px-4">Phường / Xã</th>
+                        <th className="py-3 px-4 text-right">Số lượng lấy</th>
+                        <th className="py-3 px-4 text-right">Doanh số sau VAT</th>
+                        <th className="py-3 px-4">Nhân viên phụ trách</th>
+                        <th className="py-3 px-4">Giám sát</th>
                       </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 text-slate-800">
+                      {displayedPharmacies.length === 0 ? (
+                        <tr>
+                          <td colSpan={9} className="py-10 text-center text-slate-400 font-medium">
+                            Không tìm thấy nhà thuốc phù hợp
+                          </td>
+                        </tr>
+                      ) : (
+                        displayedPharmacies.map((p, idx) => (
+                          <tr key={p.partnerId} className="hover:bg-slate-50/90 transition-colors">
+                            <td className="py-2.5 px-3.5 text-center text-slate-400 font-mono text-[11px]">
+                              {idx + 1}
+                            </td>
+                            <td className="py-2.5 px-4 font-mono font-bold text-emerald-800">
+                              {p.partnerId}
+                            </td>
+                            <td className="py-2.5 px-4 font-bold text-slate-900">
+                              {p.partnerName}
+                            </td>
+                            <td className="py-2.5 px-4 font-medium text-slate-700">
+                              {p.province}
+                            </td>
+                            <td className="py-2.5 px-4 text-slate-500 text-[11px]">
+                              {p.ward}
+                            </td>
+                            <td className="py-2.5 px-4 text-right font-mono font-bold text-slate-900 tabular-nums">
+                              {formatNumber(p.qty)}
+                            </td>
+                            <td className="py-2.5 px-4 text-right font-mono font-black text-emerald-950 tabular-nums">
+                              {formatVND(p.revenue)}
+                            </td>
+                            <td className="py-2.5 px-4 text-slate-700 font-medium truncate max-w-[150px]">
+                              {p.reps}
+                            </td>
+                            <td className="py-2.5 px-4 text-slate-500 truncate max-w-[150px]">
+                              {p.supervisors}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
 
