@@ -257,18 +257,18 @@ export const ProductGeoTab: React.FC = () => {
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-100/90 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 backdrop-blur-xs">
               <tr>
-                <th className="py-3 px-3 w-12 text-center">#</th>
-                <th className="py-3 px-3">Mã vật tư</th>
-                <th className="py-3 px-3">Sản phẩm / Dịch vụ</th>
-                <th className="py-3 px-3">ĐVT</th>
-                <th className="py-3 px-3 text-right">Sản lượng</th>
-                <th className="py-3 px-3 text-right">Số đơn</th>
-                <th className="py-3 px-3 text-right">Số nhà thuốc</th>
-                <th className="py-3 px-3 text-right">Doanh số (+VAT)</th>
-                <th className="py-3 px-3 text-right">Tỷ trọng</th>
+                <th className="py-3 px-3 w-10 text-center text-slate-400">#</th>
+                <th className="py-3 px-3 text-purple-300">Mã SKU</th>
+                <th className="py-3 px-3 text-white">Sản phẩm / Dịch vụ</th>
+                <th className="py-3 px-3 text-slate-300">ĐVT</th>
+                <th className="py-3 px-3 text-right text-amber-300">Sản lượng</th>
+                <th className="py-3 px-3 text-right text-blue-300">Số đơn</th>
+                <th className="py-3 px-3 text-right text-teal-300">Số nhà thuốc</th>
+                <th className="py-3 px-3 text-right text-emerald-300">Doanh số (+VAT)</th>
+                <th className="py-3 px-3 text-right text-pink-300">Tỷ trọng</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-slate-800">
+            <tbody className="divide-y divide-slate-100 text-slate-800 bg-white">
               {displayedProducts.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="py-8 text-center text-slate-400 font-medium">
@@ -288,31 +288,39 @@ export const ProductGeoTab: React.FC = () => {
                         toggleChartFilter('itemCode', p.code, `Sản phẩm ${p.name}`)
                       }
                       className={`hover:bg-slate-50 cursor-pointer transition-colors ${
-                        isFiltered ? 'bg-emerald-50/50 font-semibold' : ''
+                        isFiltered ? 'bg-emerald-50/70 font-semibold' : ''
                       }`}
                     >
                       <td className="py-2.5 px-3 text-center text-slate-400 font-mono text-[11px]">
                         {idx + 1}
                       </td>
-                      <td className="py-2.5 px-3 font-mono font-bold text-slate-700">
-                        {p.code}
+                      <td className="py-2.5 px-3 font-mono font-bold">
+                        <span className="text-purple-800 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-200/80">
+                          {p.code}
+                        </span>
                       </td>
                       <td className="py-2.5 px-3 font-bold text-slate-900">{p.name}</td>
                       <td className="py-2.5 px-3 text-slate-500 font-medium">{p.unit}</td>
-                      <td className="py-2.5 px-3 text-right font-mono tabular-nums font-semibold">
-                        {formatNumber(p.qty)}
+                      <td className="py-2.5 px-3 text-right font-mono tabular-nums font-bold">
+                        <span className="text-amber-900 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/80">
+                          {formatNumber(p.qty)}
+                        </span>
                       </td>
-                      <td className="py-2.5 px-3 text-right font-mono tabular-nums text-slate-600">
+                      <td className="py-2.5 px-3 text-right font-mono tabular-nums text-blue-900 font-semibold">
                         {formatNumber(p.ordersCount)}
                       </td>
-                      <td className="py-2.5 px-3 text-right font-mono tabular-nums text-emerald-800 font-bold">
-                        {formatNumber(p.partnersCount)}
+                      <td className="py-2.5 px-3 text-right font-mono tabular-nums">
+                        <span className="text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md font-bold border border-teal-200/80">
+                          {formatNumber(p.partnersCount)}
+                        </span>
                       </td>
-                      <td className="py-2.5 px-3 text-right font-mono font-black text-slate-950 tabular-nums">
-                        {formatVND(p.revenue)}
+                      <td className="py-2.5 px-3 text-right font-mono font-black tabular-nums">
+                        <span className="text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200/80 inline-block">
+                          {formatVND(p.revenue)}
+                        </span>
                       </td>
                       <td className="py-2.5 px-3 text-right">
-                        <span className="font-bold text-slate-700 tabular-nums">
+                        <span className="font-bold text-pink-700 bg-pink-50 px-2 py-0.5 rounded-md border border-pink-200/80 tabular-nums">
                           {p.share.toFixed(1).replace('.', ',')}%
                         </span>
                       </td>
@@ -354,41 +362,53 @@ export const ProductGeoTab: React.FC = () => {
                   selectedProvinceDrill === geo.province ||
                   (!selectedProvinceDrill && idx === 0);
 
+                const provinceGradients = [
+                  'from-amber-500 via-orange-500 to-rose-500',
+                  'from-blue-600 via-indigo-600 to-purple-600',
+                  'from-emerald-500 via-teal-500 to-cyan-500',
+                  'from-purple-600 via-pink-600 to-rose-500',
+                  'from-cyan-500 via-blue-600 to-indigo-600',
+                  'from-teal-600 via-emerald-600 to-green-600',
+                ];
+                const gradient = provinceGradients[idx % provinceGradients.length];
+
                 return (
                   <div
                     key={geo.province}
                     onClick={() => setSelectedProvinceDrill(geo.province)}
                     className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
                       isSelected
-                        ? 'border-emerald-500 bg-emerald-50/50 ring-2 ring-emerald-400 shadow-xs'
-                        : 'border-slate-100 hover:border-slate-300 hover:bg-slate-50'
+                        ? 'border-emerald-500 bg-gradient-to-r from-emerald-50/80 to-teal-50/40 ring-2 ring-emerald-400 shadow-xs scale-[1.01]'
+                        : 'border-slate-100 hover:border-slate-300 hover:bg-slate-50/90'
                     }`}
                   >
                     <div className="flex items-center justify-between text-xs font-bold text-slate-900">
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-emerald-600" />
-                        <span className="text-sm font-bold">{geo.province}</span>
+                        <div className="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-bold">
+                          <MapPin className="w-3.5 h-3.5" />
+                        </div>
+                        <span className="text-sm font-black text-slate-950">{geo.province}</span>
                       </div>
-                      <span className="font-mono text-slate-950 font-black tabular-nums">
+                      <span className="font-mono text-emerald-700 font-black tabular-nums">
                         {formatVND(geo.revenue)}
                       </span>
                     </div>
 
-                    {/* Bar */}
+                    {/* Bar with vivid gradient */}
                     <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden mt-2.5">
                       <div
                         style={{ width: `${widthPercent}%` }}
-                        className={`h-full rounded-full transition-all duration-300 ${
+                        className={`h-full rounded-full transition-all duration-300 shadow-2xs ${
                           isSelected
-                            ? 'bg-gradient-to-r from-emerald-600 to-teal-400'
-                            : 'bg-gradient-to-r from-slate-900 to-slate-700'
+                            ? 'bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400'
+                            : `bg-gradient-to-r ${gradient}`
                         }`}
                       />
                     </div>
 
                     <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1.5 font-medium">
-                      <span>{geo.partnersCount} nhà thuốc · {geo.ordersCount} đơn</span>
-                      <span className="font-bold text-emerald-800">
+                      <span className="text-teal-700 font-semibold">{geo.partnersCount} nhà thuốc · {geo.ordersCount} đơn</span>
+                      <span className="font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
                         {geo.share.toFixed(1).replace('.', ',')}% tổng doanh số
                       </span>
                     </div>

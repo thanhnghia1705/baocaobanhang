@@ -287,37 +287,57 @@ export const AreaDetailTab: React.FC = () => {
     XLSX.writeFile(wb, `Review_${cleanSup}_${cleanRep}_${Date.now()}.xlsx`);
   };
 
+  // Colors for supervisor avatar pills
+  const supervisorColorMap = useMemo(() => {
+    const palettes = [
+      { bg: 'from-blue-600 to-indigo-700', text: 'text-blue-300', ring: 'ring-blue-400', badge: 'bg-blue-500/20 text-blue-300 border-blue-400/30' },
+      { bg: 'from-emerald-600 to-teal-700', text: 'text-emerald-300', ring: 'ring-emerald-400', badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30' },
+      { bg: 'from-purple-600 to-pink-700', text: 'text-purple-300', ring: 'ring-purple-400', badge: 'bg-purple-500/20 text-purple-300 border-purple-400/30' },
+      { bg: 'from-amber-500 to-orange-600', text: 'text-amber-300', ring: 'ring-amber-400', badge: 'bg-amber-500/20 text-amber-300 border-amber-400/30' },
+      { bg: 'from-cyan-600 to-blue-700', text: 'text-cyan-300', ring: 'ring-cyan-400', badge: 'bg-cyan-500/20 text-cyan-300 border-cyan-400/30' },
+    ];
+    const map = new Map<string, typeof palettes[0]>();
+    uniqueValues.supervisors.forEach((s, idx) => {
+      map.set(s, palettes[idx % palettes.length]);
+    });
+    return map;
+  }, [uniqueValues.supervisors]);
+
   return (
     <div className="space-y-6">
       {/* Top Review Banner & Supervisor Picker */}
-      <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white rounded-3xl p-6 shadow-xl shadow-slate-950/15 border border-slate-800 space-y-5">
-        <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-gradient-to-br from-[#0c1427] via-[#112240] to-[#1e1b4b] text-white rounded-3xl p-6 shadow-xl shadow-slate-950/20 border border-indigo-900/60 space-y-5 relative overflow-hidden">
+        {/* Ambient atmospheric glows */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+        <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-purple-500/15 rounded-full blur-3xl pointer-events-none -mb-20" />
+
+        <div className="flex flex-wrap items-center justify-between gap-4 relative z-10">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-white/10 text-emerald-400 flex items-center justify-center font-bold border border-white/15 shadow-inner">
-              <MapPin className="w-6 h-6 text-emerald-400" />
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center font-bold shadow-lg shadow-cyan-500/30 border border-white/20">
+              <MapPin className="w-6 h-6 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                  PHẦN 5: REVIEW 1-1 QUẢN TRỊ
+                <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500/30 to-blue-500/30 text-cyan-300 border border-cyan-400/40 shadow-xs">
+                  PHẦN 5: REVIEW 1-1 QUẢN TRỊ VÙNG
                 </span>
               </div>
-              <h2 className="text-xl font-black text-white tracking-tight uppercase mt-1">
+              <h2 className="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-cyan-200 tracking-tight uppercase mt-1">
                 CHI TIẾT KHU VỰC & ĐÁNH GIÁ GIÁM SÁT
               </h2>
               <p className="text-xs text-slate-300 mt-0.5 font-medium">
-                Chọn Giám sát để kiểm tra toàn bộ Nhân viên, sau đó bấm vào từng Nhân viên để bóc tách Tỉnh/Thành, Nhà thuốc, Sản phẩm và Doanh số sau VAT.
+                Chọn Giám sát bên dưới để kiểm tra toàn bộ Nhân viên, sau đó bấm vào từng Nhân viên để bóc tách Tỉnh/Thành, Nhà thuốc, Sản phẩm và Doanh số sau VAT.
               </p>
             </div>
           </div>
 
-          {/* Supervisor Selector */}
-          <div className="flex items-center gap-2.5 bg-white/10 p-2 rounded-2xl border border-white/15 backdrop-blur-xs">
-            <span className="text-xs font-bold text-slate-200 pl-2">Chọn Giám sát:</span>
+          {/* Supervisor Quick Buttons & Dropdown */}
+          <div className="flex items-center gap-2 bg-white/10 p-1.5 rounded-2xl border border-white/20 backdrop-blur-md shadow-inner">
+            <span className="text-xs font-bold text-slate-300 px-2 hidden sm:inline">Giám sát:</span>
             <select
               value={selectedSupervisor}
               onChange={(e) => setSelectedSupervisor(e.target.value)}
-              className="px-3.5 py-2 text-xs font-bold bg-slate-900 border border-slate-700 rounded-xl text-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-inner"
+              className="px-3.5 py-2 text-xs font-black bg-slate-950 border border-indigo-700/60 rounded-xl text-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 shadow-inner"
             >
               {uniqueValues.supervisors.map((s) => (
                 <option key={s} value={s}>
@@ -328,68 +348,97 @@ export const AreaDetailTab: React.FC = () => {
           </div>
         </div>
 
-        {/* Supervisor Team Summary Strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 pt-4 border-t border-white/15">
-          <div className="bg-white/5 rounded-2xl p-3.5 border border-white/10">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+        {/* Quick Clickable Supervisor Pill Badges */}
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-1 relative z-10">
+          <span className="text-[11px] font-bold text-slate-400 shrink-0">Chọn nhanh:</span>
+          {uniqueValues.supervisors.map((sup) => {
+            const isSelected = selectedSupervisor === sup;
+            const style = supervisorColorMap.get(sup) || {
+              bg: 'from-blue-600 to-indigo-700',
+              text: 'text-blue-300',
+              ring: 'ring-blue-400',
+              badge: 'bg-blue-500/20 text-blue-300 border-blue-400/30',
+            };
+
+            return (
+              <button
+                key={sup}
+                onClick={() => setSelectedSupervisor(sup)}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${
+                  isSelected
+                    ? `bg-gradient-to-r ${style.bg} text-white shadow-md shadow-indigo-900/40 border-white/30 scale-105`
+                    : 'bg-white/10 text-slate-300 hover:bg-white/20 hover:text-white border-white/10'
+                }`}
+              >
+                <span className={`w-2 h-2 rounded-full ${isSelected ? 'bg-white animate-pulse' : 'bg-slate-400'}`} />
+                <span>{sup}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Supervisor Team Summary Strip with Colorful Theme Cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 pt-4 border-t border-white/15 relative z-10">
+          <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-3.5 border border-white/15 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-wider text-cyan-300">
               Khu vực & Đơn vị
             </p>
-            <p className="text-sm font-bold text-emerald-300 mt-1 truncate">
+            <p className="text-sm font-black text-white mt-1 truncate">
               {supervisorSummary.areaDirector}
             </p>
-            <p className="text-[10px] text-slate-400 truncate">{supervisorSummary.unitDirector}</p>
+            <p className="text-[10px] text-slate-300 truncate mt-0.5">{supervisorSummary.unitDirector}</p>
           </div>
 
-          <div className="bg-white/5 rounded-2xl p-3.5 border border-white/10">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-              Tổng doanh số team (+VAT)
+          <div className="bg-gradient-to-br from-emerald-500/20 via-teal-500/15 to-white/5 rounded-2xl p-3.5 border border-emerald-400/30 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-wider text-emerald-300">
+              Doanh số team (+VAT)
             </p>
-            <p className="text-lg font-black font-mono text-white mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-emerald-300 mt-1 tabular-nums">
               {formatCompactVND(supervisorSummary.revenue).compact}
             </p>
-            <p className="text-[10px] text-emerald-300 font-mono truncate">
+            <p className="text-[10px] text-slate-300 font-mono truncate mt-0.5">
               {formatVND(supervisorSummary.revenue)}
             </p>
           </div>
 
-          <div className="bg-white/5 rounded-2xl p-3.5 border border-white/10">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <div className="bg-gradient-to-br from-purple-500/20 via-indigo-500/15 to-white/5 rounded-2xl p-3.5 border border-purple-400/30 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-wider text-purple-300">
               Quy mô nhân sự
             </p>
-            <p className="text-lg font-black font-mono text-white mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-white mt-1 tabular-nums">
               {salesRepsList.length} Nhân viên
             </p>
-            <p className="text-[10px] text-slate-400">Đang có dữ liệu bán</p>
+            <p className="text-[10px] text-purple-200 mt-0.5">Đang phát sinh số</p>
           </div>
 
-          <div className="bg-white/5 rounded-2xl p-3.5 border border-white/10">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <div className="bg-gradient-to-br from-teal-500/20 via-cyan-500/15 to-white/5 rounded-2xl p-3.5 border border-teal-400/30 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-wider text-teal-300">
               Nhà thuốc phục vụ
             </p>
-            <p className="text-lg font-black font-mono text-emerald-300 mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-teal-300 mt-1 tabular-nums">
               {formatNumber(supervisorSummary.partnersCount)}
             </p>
-            <p className="text-[10px] text-slate-400">Khách hàng duy nhất</p>
+            <p className="text-[10px] text-slate-300 mt-0.5">Khách hàng đếm duy nhất</p>
           </div>
 
-          <div className="bg-white/5 rounded-2xl p-3.5 border border-white/10">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <div className="bg-gradient-to-br from-blue-500/20 via-indigo-500/15 to-white/5 rounded-2xl p-3.5 border border-blue-400/30 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-wider text-blue-300">
               Đơn hàng & Sản lượng
             </p>
-            <p className="text-lg font-black font-mono text-white mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-white mt-1 tabular-nums">
               {formatNumber(supervisorSummary.ordersCount)} đơn
             </p>
-            <p className="text-[10px] text-slate-400">{formatNumber(supervisorSummary.quantity)} sản phẩm</p>
+            <p className="text-[10px] text-blue-200 mt-0.5">{formatNumber(supervisorSummary.quantity)} sản phẩm</p>
           </div>
 
-          <div className="bg-white/5 rounded-2xl p-3.5 border border-white/10">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <div className="bg-gradient-to-br from-amber-500/20 via-orange-500/15 to-white/5 rounded-2xl p-3.5 border border-amber-400/30 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-wider text-amber-300">
               Độ phủ địa bàn
             </p>
-            <p className="text-lg font-black font-mono text-white mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-amber-300 mt-1 tabular-nums">
               {supervisorSummary.provincesCount} Tỉnh / Thành
             </p>
-            <p className="text-[10px] text-emerald-300">Phạm vi giám sát</p>
+            <p className="text-[10px] text-slate-300 mt-0.5">Phạm vi giám sát</p>
           </div>
         </div>
       </div>
@@ -434,37 +483,55 @@ export const AreaDetailTab: React.FC = () => {
               displayedReps.map((r, idx) => {
                 const isSelected = selectedSalesRep === r.rep;
 
+                // Rank medal styling
+                let rankBadge = (
+                  <span className="w-6 h-6 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 font-mono bg-slate-100 text-slate-600">
+                    {idx + 1}
+                  </span>
+                );
+                if (idx === 0) {
+                  rankBadge = (
+                    <span className="w-6 h-6 rounded-lg text-xs font-black flex items-center justify-center shrink-0 font-mono bg-gradient-to-br from-amber-300 via-amber-400 to-amber-500 text-amber-950 shadow-xs shadow-amber-500/30">
+                      🥇
+                    </span>
+                  );
+                } else if (idx === 1) {
+                  rankBadge = (
+                    <span className="w-6 h-6 rounded-lg text-xs font-black flex items-center justify-center shrink-0 font-mono bg-gradient-to-br from-slate-200 via-slate-300 to-slate-400 text-slate-900 shadow-xs">
+                      🥈
+                    </span>
+                  );
+                } else if (idx === 2) {
+                  rankBadge = (
+                    <span className="w-6 h-6 rounded-lg text-xs font-black flex items-center justify-center shrink-0 font-mono bg-gradient-to-br from-amber-600 via-orange-600 to-amber-700 text-white shadow-xs">
+                      🥉
+                    </span>
+                  );
+                }
+
                 return (
                   <div
                     key={r.rep}
                     onClick={() => setSelectedSalesRep(r.rep)}
                     className={`p-3.5 rounded-2xl border transition-all cursor-pointer relative ${
                       isSelected
-                        ? 'border-emerald-500 bg-gradient-to-r from-emerald-50/80 to-teal-50/40 ring-2 ring-emerald-400 shadow-md scale-[1.01]'
-                        : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50/80'
+                        ? 'border-cyan-500 bg-gradient-to-r from-cyan-50/90 via-sky-50/70 to-emerald-50/80 ring-2 ring-cyan-400 shadow-md scale-[1.01]'
+                        : 'border-slate-200 hover:border-indigo-300 hover:bg-slate-50/90 shadow-2xs'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <span
-                          className={`w-6 h-6 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 font-mono ${
-                            isSelected
-                              ? 'bg-emerald-600 text-white'
-                              : 'bg-slate-100 text-slate-600'
-                          }`}
-                        >
-                          {idx + 1}
-                        </span>
+                        {rankBadge}
                         <div className="truncate">
                           <p
                             className={`text-xs font-bold truncate ${
-                              isSelected ? 'text-emerald-950 font-extrabold' : 'text-slate-900'
+                              isSelected ? 'text-cyan-950 font-black' : 'text-slate-900'
                             }`}
                           >
                             {r.rep}
                           </p>
                           {r.teamLead && (
-                            <p className="text-[10px] text-slate-400 truncate">
+                            <p className="text-[10px] text-indigo-700 font-medium truncate">
                               Nhóm: {r.teamLead}
                             </p>
                           )}
@@ -472,22 +539,34 @@ export const AreaDetailTab: React.FC = () => {
                       </div>
 
                       <div className="text-right shrink-0">
-                        <p className="text-xs font-black font-mono text-slate-950 tabular-nums">
+                        <p className="text-xs font-black font-mono text-emerald-700 tabular-nums">
                           {formatVND(r.revenue)}
                         </p>
-                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/70 px-1.5 py-0.2 rounded">
+                        <span className="text-[10px] font-black text-cyan-800 bg-cyan-100/80 px-2 py-0.5 rounded-md inline-block mt-0.5">
                           {r.share.toFixed(1).replace('.', ',')}% team
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] text-slate-500 mt-2.5 pt-2 border-t border-slate-100/80 font-medium">
-                      <span>{r.partnersCount} nhà thuốc</span>
-                      <span>{r.ordersCount} đơn</span>
-                      <span>{r.provincesCount} tỉnh thành</span>
+                    {/* Mini colorful share progress bar */}
+                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-2">
+                      <div
+                        style={{ width: `${Math.min(r.share, 100)}%` }}
+                        className={`h-full rounded-full transition-all duration-300 ${
+                          isSelected
+                            ? 'bg-gradient-to-r from-cyan-500 via-blue-500 to-emerald-500'
+                            : 'bg-gradient-to-r from-indigo-500 to-purple-500'
+                        }`}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between text-[11px] text-slate-500 mt-2 pt-2 border-t border-slate-100/90 font-medium">
+                      <span className="text-teal-700 font-semibold">{r.partnersCount} nhà thuốc</span>
+                      <span className="text-blue-700 font-semibold">{r.ordersCount} đơn</span>
+                      <span className="text-amber-700 font-semibold">{r.provincesCount} tỉnh thành</span>
                       <ChevronRight
                         className={`w-3.5 h-3.5 transition-transform ${
-                          isSelected ? 'text-emerald-600 translate-x-0.5' : 'text-slate-300'
+                          isSelected ? 'text-cyan-600 translate-x-0.5 stroke-[2.5]' : 'text-slate-300'
                         }`}
                       />
                     </div>
@@ -501,18 +580,18 @@ export const AreaDetailTab: React.FC = () => {
         {/* Right Column: Detailed Breakdown for Review (8 of 12 cols) */}
         <div className="lg:col-span-8 space-y-5">
           {/* Active Sales Rep Review Card */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs space-y-4">
+          <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
-                  <UserCheck className="w-5 h-5 text-emerald-700" />
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center font-bold shadow-md shadow-cyan-500/20">
+                  <UserCheck className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
                       Đang review nhân viên:
                     </span>
-                    <span className="text-xs font-black text-emerald-900 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
+                    <span className="text-xs font-black text-cyan-900 bg-cyan-100 px-3 py-0.5 rounded-full border border-cyan-300 shadow-2xs">
                       {selectedSalesRep || 'Chưa chọn'}
                     </span>
                   </div>
@@ -527,46 +606,46 @@ export const AreaDetailTab: React.FC = () => {
                   type="button"
                   onClick={handleExportReviewExcel}
                   disabled={displayedDetails.length === 0}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-xl shadow-xs transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 rounded-xl shadow-md shadow-emerald-600/20 transition-all disabled:opacity-50"
                   title="Xuất bảng dữ liệu chi tiết của nhân viên này ra Excel"
                 >
-                  <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-white" />
                   <span>Xuất Excel chi tiết</span>
                 </button>
               </div>
             </div>
 
-            {/* Quick KPI strip of selected sales rep */}
+            {/* Quick KPI strip of selected sales rep with 4 distinct vibrant themes */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="bg-slate-50 rounded-2xl p-3 border border-slate-200/80">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              <div className="bg-gradient-to-br from-emerald-50 to-teal-50/40 rounded-2xl p-3 border border-emerald-200/80 shadow-2xs">
+                <p className="text-[10px] font-black uppercase tracking-wider text-emerald-800">
                   Doanh số (+VAT)
                 </p>
-                <p className="text-base font-black font-mono text-slate-950 mt-1 tabular-nums">
+                <p className="text-base font-black font-mono text-emerald-950 mt-1 tabular-nums">
                   {formatVND(repCurrentSummary.rev)}
                 </p>
               </div>
-              <div className="bg-slate-50 rounded-2xl p-3 border border-slate-200/80">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              <div className="bg-gradient-to-br from-cyan-50 to-blue-50/40 rounded-2xl p-3 border border-cyan-200/80 shadow-2xs">
+                <p className="text-[10px] font-black uppercase tracking-wider text-cyan-800">
                   Nhà thuốc phát sinh
                 </p>
-                <p className="text-base font-black font-mono text-emerald-800 mt-1 tabular-nums">
+                <p className="text-base font-black font-mono text-cyan-950 mt-1 tabular-nums">
                   {repCurrentSummary.partners} Khách hàng
                 </p>
               </div>
-              <div className="bg-slate-50 rounded-2xl p-3 border border-slate-200/80">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              <div className="bg-gradient-to-br from-purple-50 to-indigo-50/40 rounded-2xl p-3 border border-purple-200/80 shadow-2xs">
+                <p className="text-[10px] font-black uppercase tracking-wider text-purple-800">
                   Sản phẩm bán được
                 </p>
-                <p className="text-base font-black font-mono text-slate-950 mt-1 tabular-nums">
+                <p className="text-base font-black font-mono text-purple-950 mt-1 tabular-nums">
                   {repCurrentSummary.items} Mã hàng
                 </p>
               </div>
-              <div className="bg-slate-50 rounded-2xl p-3 border border-slate-200/80">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              <div className="bg-gradient-to-br from-amber-50 to-orange-50/40 rounded-2xl p-3 border border-amber-200/80 shadow-2xs">
+                <p className="text-[10px] font-black uppercase tracking-wider text-amber-800">
                   Tổng sản lượng
                 </p>
-                <p className="text-base font-black font-mono text-slate-950 mt-1 tabular-nums">
+                <p className="text-base font-black font-mono text-amber-950 mt-1 tabular-nums">
                   {formatNumber(repCurrentSummary.qty)} Đơn vị
                 </p>
               </div>
@@ -582,7 +661,7 @@ export const AreaDetailTab: React.FC = () => {
                     placeholder="Lọc nhà thuốc, sản phẩm, địa bàn..."
                     value={detailSearch}
                     onChange={(e) => setDetailSearch(e.target.value)}
-                    className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 w-64 font-medium"
+                    className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 w-64 font-medium"
                   />
                 </div>
 
@@ -607,22 +686,22 @@ export const AreaDetailTab: React.FC = () => {
               </span>
             </div>
 
-            {/* Granular Table Required by User */}
-            <div className="border border-slate-200 rounded-2xl overflow-x-auto max-h-[440px] overflow-y-auto">
+            {/* Granular Table Required by User with rich color cells */}
+            <div className="border border-slate-200 rounded-2xl overflow-x-auto max-h-[440px] overflow-y-auto shadow-inner">
               <table className="w-full text-left text-xs whitespace-nowrap">
-                <thead className="bg-slate-100/90 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 backdrop-blur-xs">
+                <thead className="bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 text-slate-200 font-bold sticky top-0 z-10 border-b border-indigo-900">
                   <tr>
-                    <th className="py-2.5 px-3 w-10 text-center">#</th>
-                    <th className="py-2.5 px-3">Tỉnh / Thành phố</th>
-                    <th className="py-2.5 px-3">Phường / Xã</th>
-                    <th className="py-2.5 px-3">Tên Nhà thuốc</th>
-                    <th className="py-2.5 px-3">Tên Sản phẩm bán</th>
-                    <th className="py-2.5 px-3 text-right">Số lượng</th>
-                    <th className="py-2.5 px-3 text-right">Doanh số sau VAT</th>
-                    <th className="py-2.5 px-3 text-center">Ngày đặt</th>
+                    <th className="py-2.5 px-3 w-10 text-center text-slate-400">#</th>
+                    <th className="py-2.5 px-3 text-cyan-300">Tỉnh / Thành phố</th>
+                    <th className="py-2.5 px-3 text-slate-300">Phường / Xã</th>
+                    <th className="py-2.5 px-3 text-emerald-300">Tên Nhà thuốc</th>
+                    <th className="py-2.5 px-3 text-purple-300">Tên Sản phẩm bán</th>
+                    <th className="py-2.5 px-3 text-right text-amber-300">Số lượng</th>
+                    <th className="py-2.5 px-3 text-right text-emerald-300">Doanh số sau VAT</th>
+                    <th className="py-2.5 px-3 text-center text-slate-300">Ngày đặt</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-800">
+                <tbody className="divide-y divide-slate-100 text-slate-800 bg-white">
                   {displayedDetails.length === 0 ? (
                     <tr>
                       <td colSpan={8} className="py-10 text-center text-slate-400 font-medium">
@@ -632,32 +711,41 @@ export const AreaDetailTab: React.FC = () => {
                   ) : (
                     displayedDetails.map((r, idx) => (
                       <tr key={r._id} className="hover:bg-slate-50/90 transition-colors">
-                        <td className="py-2 px-3 text-center text-slate-400 font-mono text-[11px]">
+                        <td className="py-2.5 px-3 text-center text-slate-400 font-mono text-[11px]">
                           {idx + 1}
                         </td>
-                        <td className="py-2 px-3 font-semibold text-slate-800">
-                          {r.province || '—'}
+                        <td className="py-2.5 px-3 font-semibold">
+                          <span className="px-2 py-0.5 rounded-lg bg-sky-50 text-sky-800 font-bold border border-sky-200/80 text-[11px]">
+                            {r.province || '—'}
+                          </span>
                         </td>
-                        <td className="py-2 px-3 text-slate-500 text-[11px]">
+                        <td className="py-2.5 px-3 text-slate-500 text-[11px]">
                           {r.ward || '—'}
                         </td>
-                        <td className="py-2 px-3">
-                          <p className="font-bold text-slate-900">{r.partnerName}</p>
-                          <p className="text-[10px] text-emerald-700 font-mono font-medium">
+                        <td className="py-2.5 px-3">
+                          <p className="font-bold text-slate-950">{r.partnerName}</p>
+                          <span className="text-[10px] text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded font-mono font-bold border border-emerald-200/70 inline-block mt-0.5">
                             {r.partnerId}
-                          </p>
+                          </span>
                         </td>
-                        <td className="py-2 px-3">
-                          <p className="font-bold text-slate-800">{r.itemName}</p>
-                          <p className="text-[10px] text-slate-400 font-mono">{r.itemCode}</p>
+                        <td className="py-2.5 px-3">
+                          <p className="font-bold text-indigo-950">{r.itemName}</p>
+                          <span className="text-[10px] text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded font-mono font-medium border border-purple-200/60 inline-block mt-0.5">
+                            {r.itemCode}
+                          </span>
                         </td>
-                        <td className="py-2 px-3 text-right font-mono font-bold tabular-nums text-slate-900">
-                          {formatNumber(r.quantity)} <span className="text-[10px] text-slate-500 font-normal">{r.unit}</span>
+                        <td className="py-2.5 px-3 text-right">
+                          <span className="px-2 py-0.5 rounded-lg bg-amber-50 text-amber-900 font-bold font-mono border border-amber-200/80">
+                            {formatNumber(r.quantity)}{' '}
+                            <span className="text-[10px] text-slate-500 font-normal">{r.unit}</span>
+                          </span>
                         </td>
-                        <td className="py-2 px-3 text-right font-mono font-black tabular-nums text-emerald-950">
-                          {formatVND(r.revenueVAT)}
+                        <td className="py-2.5 px-3 text-right font-mono font-black tabular-nums">
+                          <span className="text-emerald-700 font-black text-xs bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200/70 inline-block">
+                            {formatVND(r.revenueVAT)}
+                          </span>
                         </td>
-                        <td className="py-2 px-3 text-center text-slate-500 font-mono text-[11px]">
+                        <td className="py-2.5 px-3 text-center text-slate-500 font-mono text-[11px]">
                           {formatDateVN(r.orderDate)}
                         </td>
                       </tr>
@@ -669,19 +757,21 @@ export const AreaDetailTab: React.FC = () => {
           </div>
 
           {/* Meeting Notes & Action Items Section for Review with this Supervisor */}
-          <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-xs space-y-3">
+          <div className="bg-gradient-to-br from-amber-50/40 via-white to-indigo-50/30 rounded-3xl p-5 border border-amber-200/80 shadow-xs space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <ClipboardPen className="w-4 h-4 text-emerald-600" />
-                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                <div className="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold shadow-xs">
+                  <ClipboardPen className="w-4 h-4" />
+                </div>
+                <h4 className="text-xs font-black text-amber-950 uppercase tracking-wider">
                   Biên bản & Ghi chú Review 1-1 với Giám sát: {selectedSupervisor}
                 </h4>
               </div>
 
               {isSavedNote && (
-                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md flex items-center gap-1">
+                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-lg flex items-center gap-1 shadow-2xs">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  Đã lưu ghi chú
+                  Đã lưu ghi chú vào hệ thống
                 </span>
               )}
             </div>
@@ -691,14 +781,14 @@ export const AreaDetailTab: React.FC = () => {
               placeholder={`Ghi chú mục tiêu KPI, kế hoạch mở rộng nhà thuốc mới, chấn chỉnh nhân viên yếu hoặc phản hồi của ông ${selectedSupervisor}...`}
               value={reviewNote}
               onChange={(e) => setReviewNote(e.target.value)}
-              className="w-full p-3 text-xs bg-slate-50 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-slate-800 font-medium"
+              className="w-full p-3 text-xs bg-white rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-slate-800 font-medium shadow-inner"
             />
 
             <div className="flex justify-end">
               <button
                 type="button"
                 onClick={handleSaveNote}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-colors shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 rounded-xl transition-all shadow-md shadow-amber-600/20"
               >
                 <Save className="w-3.5 h-3.5" />
                 <span>Lưu ghi chú review này</span>

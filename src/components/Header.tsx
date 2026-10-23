@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  FileSpreadsheet,
   Download,
   RotateCcw,
   Upload,
@@ -8,6 +7,7 @@ import {
   UserCheck,
   Sparkles,
   BarChart3,
+  Award,
 } from 'lucide-react';
 import { useSalesData } from '../context/SalesDataContext';
 import { formatDateVN } from '../utils/formatters';
@@ -48,23 +48,27 @@ export const Header: React.FC<HeaderProps> = ({ onOpenUpload, onOpenExport }) =>
 
   return (
     <header className="bg-white/95 backdrop-blur-md border-b border-slate-200/90 sticky top-0 z-30 shadow-xs">
-      {/* Top Banner: Creator Info & System Tagline */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between text-[11px] font-medium border-b border-slate-800">
-        <div className="flex items-center gap-2">
-          <span className="flex h-2 w-2 relative">
+      {/* Top Banner: Creator Info & Executive Brand Stripe */}
+      <div className="bg-gradient-to-r from-[#0c1427] via-[#112240] to-[#1e1b4b] text-white px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between text-[11px] font-medium border-b border-indigo-900/40">
+        <div className="flex items-center gap-2.5">
+          <span className="flex h-2.5 w-2.5 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 shadow-sm shadow-emerald-400"></span>
           </span>
-          <span className="text-slate-300">Hệ thống phân tích kinh doanh đa chiều</span>
-          <span className="text-slate-500 hidden md:inline">·</span>
-          <span className="text-slate-400 hidden md:inline">Bảo toàn 41 cột dữ liệu nguồn</span>
+          <span className="text-slate-200 font-semibold tracking-wide">
+            HỆ THỐNG BÁO CÁO BÁN HÀNG DOANH NGHIỆP
+          </span>
+          <span className="text-slate-500 hidden md:inline">|</span>
+          <span className="text-cyan-300 font-medium hidden md:inline">
+            Tự động bóc tách 41 cột dữ liệu · Giám sát · Nhân viên · Nhà thuốc
+          </span>
         </div>
 
-        {/* Creator Info prominently displayed */}
-        <div className="flex items-center gap-1.5 bg-white/10 hover:bg-white/15 backdrop-blur-xs px-2.5 py-0.5 rounded-full border border-white/15 transition-colors">
-          <UserCheck className="w-3.5 h-3.5 text-emerald-400" />
+        {/* Creator Info prominently displayed with Gold/Emerald Badge */}
+        <div className="flex items-center gap-2 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 hover:from-emerald-500/30 hover:to-cyan-500/30 backdrop-blur-md px-3.5 py-1 rounded-full border border-emerald-400/40 shadow-xs transition-all">
+          <Award className="w-4 h-4 text-amber-300" />
           <span className="text-slate-300 font-normal">Người tạo:</span>
-          <span className="font-bold tracking-wider text-emerald-300 uppercase">
+          <span className="font-extrabold tracking-wider text-emerald-300 uppercase text-xs">
             NGUYENTHANHNGHIA
           </span>
         </div>
@@ -72,46 +76,48 @@ export const Header: React.FC<HeaderProps> = ({ onOpenUpload, onOpenExport }) =>
 
       {/* Main Navbar */}
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-        {/* Zone 1: Brand Wordmark */}
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-900 to-indigo-950 text-emerald-400 flex items-center justify-center font-bold shadow-md shadow-slate-900/10 border border-slate-800">
-            <BarChart3 className="w-5 h-5 text-emerald-400" />
+        {/* Zone 1: Brand Wordmark with Rich Gradient Icon */}
+        <div className="flex items-center gap-3.5 shrink-0">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-900 via-slate-900 to-teal-900 text-emerald-400 flex items-center justify-center font-bold shadow-md shadow-indigo-950/20 border border-indigo-700/50">
+            <BarChart3 className="w-5 h-5 text-emerald-300" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-lg font-black tracking-tight text-slate-950 uppercase leading-none font-sans">
+            <div className="flex items-center gap-2.5">
+              <h1 className="text-lg font-black tracking-tight bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 bg-clip-text text-transparent uppercase leading-none font-sans">
                 BÁO CÁO BÁN HÀNG
               </h1>
-              <span className="hidden sm:inline-flex items-center text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span className="hidden sm:inline-flex items-center text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-2xs">
                 PRO ANALYTICS
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-1 leading-none truncate max-w-xs md:max-w-md font-medium">
+            <p className="text-xs text-slate-500 mt-1 leading-none truncate max-w-xs md:max-w-md font-semibold">
               {fileInfo.fileName}
             </p>
           </div>
         </div>
 
-        {/* Zone 2: Date metadata & status indicators (No pill sandwich) */}
-        <div className="hidden xl:flex items-center gap-5 text-xs text-slate-600 bg-slate-50/80 px-4 py-2 rounded-xl border border-slate-200/60">
+        {/* Zone 2: Date metadata & status indicators with Colorful Accents */}
+        <div className="hidden xl:flex items-center gap-5 text-xs text-slate-600 bg-gradient-to-r from-slate-50 via-indigo-50/30 to-emerald-50/30 px-4 py-2 rounded-2xl border border-slate-200/80 shadow-2xs">
           <div className="flex items-center gap-2">
-            <Calendar className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-slate-500">Kỳ báo cáo:</span>
-            <span className="font-bold text-slate-900 tabular-nums">
+            <div className="w-5 h-5 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold">
+              <Calendar className="w-3 h-3" />
+            </div>
+            <span className="text-slate-500 font-medium">Kỳ báo cáo:</span>
+            <span className="font-bold text-slate-900 tabular-nums font-mono">
               {formatDateVN(earliestDate)} — {formatDateVN(latestDate)}
             </span>
           </div>
           <span className="text-slate-300" aria-hidden="true">|</span>
           <div className="flex items-center gap-2">
-            <span className="text-slate-500">Dữ liệu mới nhất:</span>
-            <span className="font-bold text-emerald-800 tabular-nums bg-emerald-100/70 px-2 py-0.5 rounded text-xs border border-emerald-200/50">
+            <span className="text-slate-500 font-medium">Ngày mới nhất:</span>
+            <span className="font-extrabold text-emerald-900 tabular-nums bg-emerald-100 border border-emerald-300/80 px-2.5 py-0.5 rounded-lg text-xs shadow-2xs font-mono">
               {formatDateVN(latestDate)}
             </span>
           </div>
           <span className="text-slate-300" aria-hidden="true">|</span>
           <div className="flex items-center gap-2">
-            <span className="text-slate-500">Đang hiển thị:</span>
-            <span className="font-bold text-slate-900 tabular-nums font-mono">
+            <span className="text-slate-500 font-medium">Đang hiển thị:</span>
+            <span className="font-extrabold text-indigo-950 tabular-nums font-mono bg-white px-2 py-0.5 rounded-lg border border-slate-200 shadow-2xs">
               {filteredRecords.length.toLocaleString('vi-VN')} / {fileInfo.totalRows.toLocaleString('vi-VN')} dòng
             </span>
           </div>
@@ -122,7 +128,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenUpload, onOpenExport }) =>
           {activeFiltersCount > 0 && (
             <button
               onClick={resetAllFilters}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-xl transition-all border border-rose-200/80 shadow-2xs hover:shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-xl transition-all border border-rose-200 shadow-2xs hover:shadow-xs"
               title="Xóa toàn bộ các bộ lọc đang áp dụng"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -135,15 +141,15 @@ export const Header: React.FC<HeaderProps> = ({ onOpenUpload, onOpenExport }) =>
 
           <button
             onClick={onOpenExport}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 rounded-xl transition-all border border-slate-300 shadow-2xs hover:shadow-xs"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-indigo-950 bg-gradient-to-r from-indigo-50 to-blue-50 hover:from-indigo-100 hover:to-blue-100 rounded-xl transition-all border border-indigo-200/80 shadow-2xs hover:shadow-xs"
           >
-            <Download className="w-3.5 h-3.5 text-slate-500" />
+            <Download className="w-3.5 h-3.5 text-indigo-600" />
             <span className="hidden sm:inline">Xuất báo cáo</span>
           </button>
 
           <button
             onClick={onOpenUpload}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 hover:from-slate-800 hover:to-indigo-900 rounded-xl shadow-xs transition-all hover:shadow-md border border-slate-800"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-slate-900 via-indigo-950 to-teal-900 hover:from-slate-800 hover:to-teal-800 rounded-xl shadow-md shadow-indigo-950/20 transition-all hover:shadow-lg border border-indigo-800/50"
           >
             <Upload className="w-3.5 h-3.5 text-emerald-400" />
             <span>Tải file mới</span>

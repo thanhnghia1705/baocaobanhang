@@ -3,6 +3,14 @@
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #f8fafc;
+    background-image: 
+      radial-gradient(at 5% 5%, rgba(99, 102, 241, 0.08) 0px, transparent 45%),
+      radial-gradient(at 95% 5%, rgba(16, 185, 129, 0.08) 0px, transparent 45%),
+      radial-gradient(at 50% 30%, rgba(244, 63, 94, 0.04) 0px, transparent 50%),
+      radial-gradient(at 10% 80%, rgba(14, 165, 233, 0.07) 0px, transparent 50%),
+      radial-gradient(at 90% 85%, rgba(245, 158, 11, 0.06) 0px, transparent 50%);
+    background-attachment: fixed;
   }
   
   .font-mono, .tabular-nums {
@@ -11,23 +19,35 @@
   }
 }
 
-/* Custom scrollbars for data tables and horizontal pill menus */
+/* Glassmorphism & vibrant card borders */
+.vibrant-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.vibrant-card:hover {
+  border-color: rgba(148, 163, 184, 0.6);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+}
+
+/* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #94a3b8;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #64748b;
 }
 
 @media print {

@@ -139,101 +139,111 @@ export const RawDataTab: React.FC = () => {
           )}
         </div>
 
-        {/* 5 Quality Check Alert Widgets with Modern Rounded styling */}
+        {/* 5 Quality Check Alert Widgets with Modern Vivid Rounded styling */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
-          {/* 1. Missing Delivery Status */}
+          {/* 1. Missing Delivery Status (Orange / Amber) */}
           <div
             onClick={() => setQualityFilter('missingDeliveryStatus')}
             className={`p-4 rounded-2xl border transition-all cursor-pointer ${
               filterState.qualityIssueFilter === 'missingDeliveryStatus'
-                ? 'border-amber-500 bg-amber-50/70 ring-2 ring-amber-400 shadow-xs'
-                : 'border-slate-200/80 hover:border-amber-300 hover:bg-slate-50'
+                ? 'border-amber-500 bg-gradient-to-b from-amber-100/90 to-amber-50 ring-2 ring-amber-400 shadow-sm scale-102'
+                : 'border-amber-200/80 bg-gradient-to-b from-amber-50/60 via-white to-white hover:border-amber-400 hover:shadow-xs'
             }`}
           >
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-800">Thiếu tình trạng giao</span>
-              <AlertTriangle className="w-4 h-4 text-amber-500" />
+              <span className="font-black text-amber-950">Thiếu tình trạng giao</span>
+              <div className="w-6 h-6 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold shadow-2xs">
+                <AlertTriangle className="w-3.5 h-3.5" />
+              </div>
             </div>
-            <p className="text-2xl font-black font-mono text-slate-950 mt-1.5 tabular-nums">
+            <p className="text-2xl font-black font-mono text-amber-950 mt-1.5 tabular-nums">
               {formatNumber(dataQualityAlerts.missingDeliveryStatusCount)}
             </p>
-            <p className="text-[10px] text-slate-500 mt-1 font-medium">Dòng rỗng trạng thái giao</p>
+            <p className="text-[10px] text-amber-800/80 mt-1 font-medium">Dòng rỗng trạng thái giao</p>
           </div>
 
-          {/* 2. Missing Actual Delivery Time */}
+          {/* 2. Missing Actual Delivery Time (Gold / Yellow) */}
           <div
             onClick={() => setQualityFilter('missingActualDelivery')}
             className={`p-4 rounded-2xl border transition-all cursor-pointer ${
               filterState.qualityIssueFilter === 'missingActualDelivery'
-                ? 'border-amber-500 bg-amber-50/70 ring-2 ring-amber-400 shadow-xs'
-                : 'border-slate-200/80 hover:border-amber-300 hover:bg-slate-50'
+                ? 'border-yellow-500 bg-gradient-to-b from-yellow-100/90 to-yellow-50 ring-2 ring-yellow-400 shadow-sm scale-102'
+                : 'border-yellow-200/80 bg-gradient-to-b from-yellow-50/60 via-white to-white hover:border-yellow-400 hover:shadow-xs'
             }`}
           >
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-800">Thiếu giờ giao thực tế</span>
-              <AlertTriangle className="w-4 h-4 text-amber-500" />
+              <span className="font-black text-yellow-950">Thiếu giờ giao thực tế</span>
+              <div className="w-6 h-6 rounded-lg bg-yellow-500 text-white flex items-center justify-center font-bold shadow-2xs">
+                <AlertTriangle className="w-3.5 h-3.5" />
+              </div>
             </div>
-            <p className="text-2xl font-black font-mono text-slate-950 mt-1.5 tabular-nums">
+            <p className="text-2xl font-black font-mono text-yellow-950 mt-1.5 tabular-nums">
               {formatNumber(dataQualityAlerts.missingActualDeliveryCount)}
             </p>
-            <p className="text-[10px] text-slate-500 mt-1 font-medium">Chưa cập nhật mốc giờ</p>
+            <p className="text-[10px] text-yellow-800/80 mt-1 font-medium">Chưa cập nhật mốc giờ</p>
           </div>
 
-          {/* 3. Delivery date before order date */}
+          {/* 3. Delivery date before order date (Crimson / Rose) */}
           <div
             onClick={() => setQualityFilter('deliveryBeforeOrder')}
             className={`p-4 rounded-2xl border transition-all cursor-pointer ${
               filterState.qualityIssueFilter === 'deliveryBeforeOrder'
-                ? 'border-rose-500 bg-rose-50/70 ring-2 ring-rose-400 shadow-xs'
-                : 'border-slate-200/80 hover:border-rose-300 hover:bg-slate-50'
+                ? 'border-rose-500 bg-gradient-to-b from-rose-100/90 to-rose-50 ring-2 ring-rose-400 shadow-sm scale-102'
+                : 'border-rose-200/80 bg-gradient-to-b from-rose-50/60 via-white to-white hover:border-rose-400 hover:shadow-xs'
             }`}
           >
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-rose-800">Ngày giao &lt; Ngày đặt</span>
-              <AlertTriangle className="w-4 h-4 text-rose-500" />
+              <span className="font-black text-rose-950">Ngày giao &lt; Ngày đặt</span>
+              <div className="w-6 h-6 rounded-lg bg-rose-600 text-white flex items-center justify-center font-bold shadow-2xs">
+                <AlertTriangle className="w-3.5 h-3.5" />
+              </div>
             </div>
             <p className="text-2xl font-black font-mono text-rose-700 mt-1.5 tabular-nums">
               {formatNumber(dataQualityAlerts.deliveryBeforeOrderCount)}
             </p>
-            <p className="text-[10px] text-rose-600/80 mt-1 font-medium">Lỗi logic thời gian hẹn</p>
+            <p className="text-[10px] text-rose-700/80 mt-1 font-bold">Lỗi logic thời gian hẹn</p>
           </div>
 
-          {/* 4. Invoiced but missing invoice number */}
+          {/* 4. Invoiced but missing invoice number (Purple / Violet) */}
           <div
             onClick={() => setQualityFilter('invoicedMissingNumber')}
             className={`p-4 rounded-2xl border transition-all cursor-pointer ${
               filterState.qualityIssueFilter === 'invoicedMissingNumber'
-                ? 'border-amber-500 bg-amber-50/70 ring-2 ring-amber-400 shadow-xs'
-                : 'border-slate-200/80 hover:border-amber-300 hover:bg-slate-50'
+                ? 'border-purple-500 bg-gradient-to-b from-purple-100/90 to-purple-50 ring-2 ring-purple-400 shadow-sm scale-102'
+                : 'border-purple-200/80 bg-gradient-to-b from-purple-50/60 via-white to-white hover:border-purple-400 hover:shadow-xs'
             }`}
           >
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-800">Đã xuất HD thiếu số</span>
-              <AlertTriangle className="w-4 h-4 text-amber-500" />
+              <span className="font-black text-purple-950">Đã xuất HD thiếu số</span>
+              <div className="w-6 h-6 rounded-lg bg-purple-600 text-white flex items-center justify-center font-bold shadow-2xs">
+                <AlertTriangle className="w-3.5 h-3.5" />
+              </div>
             </div>
-            <p className="text-2xl font-black font-mono text-slate-950 mt-1.5 tabular-nums">
+            <p className="text-2xl font-black font-mono text-purple-950 mt-1.5 tabular-nums">
               {formatNumber(dataQualityAlerts.invoicedMissingNumberCount)}
             </p>
-            <p className="text-[10px] text-slate-500 mt-1 font-medium">Đánh dấu đã xuất nhưng rỗng số</p>
+            <p className="text-[10px] text-purple-800/80 mt-1 font-medium">Đánh dấu đã xuất nhưng rỗng số</p>
           </div>
 
-          {/* 5. Conflicting status across lines in same order */}
+          {/* 5. Conflicting status across lines in same order (Cyan / Sky) */}
           <div
             onClick={() => setQualityFilter('conflictingStatus')}
             className={`p-4 rounded-2xl border transition-all cursor-pointer ${
               filterState.qualityIssueFilter === 'conflictingStatus'
-                ? 'border-amber-500 bg-amber-50/70 ring-2 ring-amber-400 shadow-xs'
-                : 'border-slate-200/80 hover:border-amber-300 hover:bg-slate-50'
+                ? 'border-cyan-500 bg-gradient-to-b from-cyan-100/90 to-cyan-50 ring-2 ring-cyan-400 shadow-sm scale-102'
+                : 'border-cyan-200/80 bg-gradient-to-b from-cyan-50/60 via-white to-white hover:border-cyan-400 hover:shadow-xs'
             }`}
           >
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-800">Mâu thuẫn trạng thái</span>
-              <AlertTriangle className="w-4 h-4 text-amber-500" />
+              <span className="font-black text-cyan-950">Mâu thuẫn trạng thái</span>
+              <div className="w-6 h-6 rounded-lg bg-cyan-600 text-white flex items-center justify-center font-bold shadow-2xs">
+                <AlertTriangle className="w-3.5 h-3.5" />
+              </div>
             </div>
-            <p className="text-2xl font-black font-mono text-slate-950 mt-1.5 tabular-nums">
+            <p className="text-2xl font-black font-mono text-cyan-950 mt-1.5 tabular-nums">
               {formatNumber(dataQualityAlerts.conflictingStatusOrdersCount)} đơn
             </p>
-            <p className="text-[10px] text-slate-500 mt-1 font-medium">Các dòng có trạng thái lệch nhau</p>
+            <p className="text-[10px] text-cyan-800/80 mt-1 font-medium">Các dòng có trạng thái lệch nhau</p>
           </div>
         </div>
       </div>

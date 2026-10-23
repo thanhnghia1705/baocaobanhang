@@ -29,7 +29,12 @@ const DashboardContent: React.FC = () => {
   const [isAdvancedFilterOpen, setIsAdvancedFilterOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800">
+    <div className="min-h-screen bg-slate-50/70 flex flex-col text-slate-800 relative overflow-x-hidden">
+      {/* Decorative ambient background glows */}
+      <div className="fixed top-0 left-1/4 w-96 h-96 bg-indigo-400/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="fixed top-1/3 right-10 w-96 h-96 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="fixed bottom-10 left-10 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl pointer-events-none -z-10" />
+
       {/* Top Header */}
       <Header
         onOpenUpload={() => setIsUploadOpen(true)}

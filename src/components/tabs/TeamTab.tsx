@@ -258,89 +258,89 @@ export const TeamTab: React.FC = () => {
           </div>
         </div>
 
-        {/* Supervisor Scope Summary Cards */}
+        {/* Supervisor Scope Summary Cards with 6 Distinct Color Themes */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 pt-4 border-t border-slate-100">
-          <div className="bg-gradient-to-b from-slate-50 to-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs">
-            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+          <div className="bg-gradient-to-b from-indigo-50/70 via-white to-white rounded-2xl p-4 border border-indigo-200/90 shadow-2xs">
+            <p className="text-[11px] font-black text-indigo-900 uppercase tracking-wider">
               Doanh số sau VAT
             </p>
-            <p className="text-xl font-black font-mono text-slate-950 mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-indigo-950 mt-1 tabular-nums">
               {formatCompactVND(supervisorScopeSummary.revenue).compact}
             </p>
-            <p className="text-[10px] text-slate-500 font-mono mt-0.5 truncate font-medium">
+            <p className="text-[10px] text-indigo-700 font-mono mt-0.5 truncate font-bold">
               {formatVND(supervisorScopeSummary.revenue)}
             </p>
           </div>
 
-          <div className="bg-gradient-to-b from-emerald-50/50 to-white rounded-2xl p-4 border border-emerald-200/80 shadow-2xs">
-            <p className="text-[11px] font-bold text-emerald-800 uppercase tracking-wider">
+          <div className="bg-gradient-to-b from-emerald-50/70 via-white to-white rounded-2xl p-4 border border-emerald-200/90 shadow-2xs">
+            <p className="text-[11px] font-black text-emerald-900 uppercase tracking-wider">
               Nhà thuốc duy nhất
             </p>
             <p className="text-xl font-black font-mono text-emerald-950 mt-1 tabular-nums">
               {formatNumber(supervisorScopeSummary.partners)}
             </p>
-            <p className="text-[10px] text-emerald-600 mt-0.5 font-medium">
-              Đếm duy nhất toàn phạm vi (không cộng dồn)
+            <p className="text-[10px] text-emerald-700 mt-0.5 font-bold">
+              Đếm duy nhất toàn phạm vi
             </p>
           </div>
 
-          <div className="bg-gradient-to-b from-slate-50 to-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs">
-            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+          <div className="bg-gradient-to-b from-blue-50/70 via-white to-white rounded-2xl p-4 border border-blue-200/90 shadow-2xs">
+            <p className="text-[11px] font-black text-blue-900 uppercase tracking-wider">
               Đơn hàng duy nhất
             </p>
-            <p className="text-xl font-black font-mono text-slate-950 mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-blue-950 mt-1 tabular-nums">
               {formatNumber(supervisorScopeSummary.orders)}
             </p>
-            <p className="text-[10px] text-slate-400 mt-0.5 font-medium">Mã đơn phát sinh</p>
+            <p className="text-[10px] text-blue-700 mt-0.5 font-medium">Mã đơn phát sinh</p>
           </div>
 
-          <div className="bg-gradient-to-b from-slate-50 to-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs">
-            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+          <div className="bg-gradient-to-b from-amber-50/70 via-white to-white rounded-2xl p-4 border border-amber-200/90 shadow-2xs">
+            <p className="text-[11px] font-black text-amber-900 uppercase tracking-wider">
               Tổng sản lượng
             </p>
-            <p className="text-xl font-black font-mono text-slate-950 mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-amber-950 mt-1 tabular-nums">
               {formatNumber(supervisorScopeSummary.quantity)}
             </p>
-            <p className="text-[10px] text-slate-400 mt-0.5 font-medium">Số lượng sản phẩm</p>
+            <p className="text-[10px] text-amber-700 mt-0.5 font-medium">Số lượng sản phẩm</p>
           </div>
 
-          <div className="bg-gradient-to-b from-slate-50 to-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs">
-            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+          <div className="bg-gradient-to-b from-purple-50/70 via-white to-white rounded-2xl p-4 border border-purple-200/90 shadow-2xs">
+            <p className="text-[11px] font-black text-purple-900 uppercase tracking-wider">
               Nhân viên có đơn
             </p>
-            <p className="text-xl font-black font-mono text-slate-950 mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-purple-950 mt-1 tabular-nums">
               {supervisorScopeSummary.activeReps} NV
             </p>
-            <p className="text-[10px] text-slate-400 mt-0.5 font-medium">Có đơn trong kỳ</p>
+            <p className="text-[10px] text-purple-700 mt-0.5 font-medium">Có đơn trong kỳ</p>
           </div>
 
-          <div className="bg-gradient-to-b from-slate-50 to-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs">
-            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+          <div className="bg-gradient-to-b from-teal-50/70 via-white to-white rounded-2xl p-4 border border-teal-200/90 shadow-2xs">
+            <p className="text-[11px] font-black text-teal-900 uppercase tracking-wider">
               AOV trung bình
             </p>
-            <p className="text-xl font-black font-mono text-slate-950 mt-1 tabular-nums truncate">
+            <p className="text-xl font-black font-mono text-teal-950 mt-1 tabular-nums truncate">
               {supervisorScopeSummary.aov ? formatVND(supervisorScopeSummary.aov) : '—'}
             </p>
-            <p className="text-[10px] text-slate-400 mt-0.5 font-medium">Doanh số / Đơn</p>
+            <p className="text-[10px] text-teal-700 mt-0.5 font-medium">Doanh số / Đơn</p>
           </div>
         </div>
       </div>
 
       {/* Row 2: Staff Horizontal Bar Chart & Staff Table */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Horizontal Bar Chart (1 Col) */}
+        {/* Horizontal Bar Chart (1 Col) with Colorful Gradient Bars */}
         <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-base font-bold text-slate-900">
+                <h3 className="text-base font-black text-slate-900">
                   Xếp hạng Doanh số Nhân viên
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">
                   Bấm vào thanh để chọn/bỏ chọn nhân viên
                 </p>
               </div>
-              <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+              <span className="text-xs font-bold text-indigo-800 bg-indigo-50 px-2.5 py-0.5 rounded-lg border border-indigo-200">
                 {staffRankingData.list.length} NV
               </span>
             </div>
@@ -353,36 +353,49 @@ export const TeamTab: React.FC = () => {
                 );
                 const isSelected = filterState.salesReps.includes(st.rep);
 
+                // 8 rotating vibrant gradients for bars
+                const barGradients = [
+                  'from-blue-600 via-indigo-600 to-cyan-500',
+                  'from-purple-600 via-pink-600 to-indigo-500',
+                  'from-emerald-500 via-teal-500 to-cyan-500',
+                  'from-amber-500 via-orange-500 to-rose-500',
+                  'from-cyan-500 via-blue-600 to-indigo-600',
+                  'from-fuchsia-600 via-purple-600 to-pink-500',
+                  'from-teal-500 via-emerald-600 to-green-600',
+                  'from-indigo-600 via-purple-600 to-blue-600',
+                ];
+                const gradient = barGradients[idx % barGradients.length];
+
                 return (
                   <div
                     key={st.rep}
                     onClick={() => handleToggleSalesRep(st.rep)}
                     className={`p-3 rounded-2xl border transition-all cursor-pointer ${
                       isSelected
-                        ? 'border-emerald-500 bg-emerald-50/50 ring-2 ring-emerald-400 shadow-xs'
-                        : 'border-slate-100 hover:border-slate-300 hover:bg-slate-50'
+                        ? 'border-emerald-500 bg-emerald-50/70 ring-2 ring-emerald-400 shadow-xs scale-[1.01]'
+                        : 'border-slate-100 hover:border-slate-300 hover:bg-slate-50/90'
                     }`}
                   >
                     <div className="flex items-center justify-between text-xs font-bold text-slate-900">
                       <div className="flex items-center gap-2 truncate pr-2">
-                        <span className="w-5 text-slate-400 font-mono text-xs">
+                        <span className="w-5 text-indigo-700 font-mono text-xs font-black">
                           #{idx + 1}
                         </span>
                         <span className="truncate">{st.rep}</span>
                       </div>
-                      <span className="font-mono text-emerald-900 font-black tabular-nums">
+                      <span className="font-mono text-emerald-700 font-black tabular-nums">
                         {formatVND(st.revenue)}
                       </span>
                     </div>
 
-                    {/* Progress Bar with vibrant gradient */}
+                    {/* Progress Bar with vibrant colorful gradient */}
                     <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden mt-2.5">
                       <div
                         style={{ width: `${widthPercent}%` }}
-                        className={`h-full rounded-full transition-all duration-300 ${
+                        className={`h-full rounded-full transition-all duration-300 shadow-2xs ${
                           isSelected
-                            ? 'bg-gradient-to-r from-emerald-600 to-teal-400'
-                            : 'bg-gradient-to-r from-slate-900 to-slate-700'
+                            ? 'bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400'
+                            : `bg-gradient-to-r ${gradient}`
                         }`}
                       />
                     </div>

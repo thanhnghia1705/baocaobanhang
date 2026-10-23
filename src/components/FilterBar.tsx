@@ -194,8 +194,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({ onOpenAdvancedFilter }) =>
               onClick={() => setFilterState((prev) => ({ ...prev, datePreset: preset.id }))}
               className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all duration-150 ${
                 filterState.datePreset === preset.id
-                  ? 'bg-white text-slate-950 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-950'
+                  ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-slate-900 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/50'
               }`}
             >
               {preset.label}

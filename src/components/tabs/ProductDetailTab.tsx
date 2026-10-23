@@ -445,20 +445,24 @@ export const ProductDetailTab: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Top Banner: Product Deep-Dive Header */}
-      <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white rounded-3xl p-6 shadow-xl shadow-slate-950/15 border border-slate-800 space-y-5">
-        <div className="flex flex-wrap items-center justify-between gap-4">
+      {/* Top Banner: Product Deep-Dive Header with Executive Fuchsia/Purple/Navy Gradient */}
+      <div className="bg-gradient-to-br from-[#1e1035] via-[#2a1347] to-[#0c1427] text-white rounded-3xl p-6 shadow-xl shadow-purple-950/20 border border-purple-800/50 space-y-5 relative overflow-hidden">
+        {/* Ambient atmospheric glows */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-pink-500/15 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+        <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-purple-500/15 rounded-full blur-3xl pointer-events-none -mb-24" />
+
+        <div className="flex flex-wrap items-center justify-between gap-4 relative z-10">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-white/10 text-emerald-400 flex items-center justify-center font-bold border border-white/15 shadow-inner">
-              <Boxes className="w-6 h-6 text-emerald-400" />
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-fuchsia-500 to-pink-600 text-white flex items-center justify-center font-bold shadow-lg shadow-pink-500/30 border border-white/20">
+              <Boxes className="w-6 h-6 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                  PHẦN 6: REVIEW THEO SẢN PHẨM
+                <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-gradient-to-r from-fuchsia-500/30 to-pink-500/30 text-pink-300 border border-pink-400/40 shadow-xs">
+                  PHẦN 6: REVIEW THEO SẢN PHẨM & ĐỘ PHỦ
                 </span>
               </div>
-              <h2 className="text-xl font-black text-white tracking-tight uppercase mt-1">
+              <h2 className="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-pink-100 to-fuchsia-200 tracking-tight uppercase mt-1">
                 CHI TIẾT SẢN PHẨM & ĐỘ PHỦ NHÀ THUỐC
               </h2>
               <p className="text-xs text-slate-300 mt-0.5 font-medium">
@@ -472,7 +476,7 @@ export const ProductDetailTab: React.FC = () => {
               type="button"
               onClick={handleExportProductExcel}
               disabled={productMatchedRecords.length === 0}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl shadow-md shadow-emerald-950/20 transition-all border border-emerald-400/30 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 rounded-xl shadow-md shadow-emerald-950/20 transition-all border border-emerald-400/30 disabled:opacity-50"
             >
               <Download className="w-4 h-4 text-white" />
               <span>Xuất Excel Báo Cáo Sản Phẩm</span>
@@ -480,60 +484,60 @@ export const ProductDetailTab: React.FC = () => {
           </div>
         </div>
 
-        {/* Selected Products Aggregate KPI Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 pt-4 border-t border-white/15">
-          <div className="bg-white/5 rounded-2xl p-3.5 border border-white/10">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+        {/* Selected Products Aggregate KPI Cards with 5 Distinct Colorful Personalities */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 pt-4 border-t border-white/15 relative z-10">
+          <div className="bg-gradient-to-br from-fuchsia-500/20 via-pink-500/15 to-white/5 rounded-2xl p-3.5 border border-fuchsia-400/30 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-wider text-pink-300">
               Sản phẩm đang chọn
             </p>
-            <p className="text-xl font-black font-mono text-emerald-300 mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-pink-300 mt-1 tabular-nums">
               {selectedProductCodes.length} / {allProducts.length} SKU
             </p>
-            <p className="text-[10px] text-slate-400 truncate">
+            <p className="text-[10px] text-slate-300 truncate mt-0.5">
               {productMatchedRecords.length.toLocaleString('vi-VN')} dòng phát sinh
             </p>
           </div>
 
-          <div className="bg-white/5 rounded-2xl p-3.5 border border-white/10">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <div className="bg-gradient-to-br from-emerald-500/20 via-teal-500/15 to-white/5 rounded-2xl p-3.5 border border-emerald-400/30 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-wider text-emerald-300">
               Doanh số sau VAT
             </p>
-            <p className="text-xl font-black font-mono text-white mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-emerald-300 mt-1 tabular-nums">
               {formatCompactVND(overallProductSummary.revenue).compact}
             </p>
-            <p className="text-[10px] text-emerald-300 font-mono truncate">
+            <p className="text-[10px] text-slate-300 font-mono truncate mt-0.5">
               {formatVND(overallProductSummary.revenue)}
             </p>
           </div>
 
-          <div className="bg-white/5 rounded-2xl p-3.5 border border-white/10">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <div className="bg-gradient-to-br from-teal-500/20 via-cyan-500/15 to-white/5 rounded-2xl p-3.5 border border-teal-400/30 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-wider text-teal-300">
               Nhà thuốc lấy hàng
             </p>
-            <p className="text-xl font-black font-mono text-emerald-300 mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-teal-300 mt-1 tabular-nums">
               {formatNumber(overallProductSummary.uniquePartners)}
             </p>
-            <p className="text-[10px] text-emerald-400 font-medium">Không trùng lặp (Set duy nhất)</p>
+            <p className="text-[10px] text-teal-200 font-medium mt-0.5">Đếm duy nhất (Không trùng)</p>
           </div>
 
-          <div className="bg-white/5 rounded-2xl p-3.5 border border-white/10">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <div className="bg-gradient-to-br from-amber-500/20 via-orange-500/15 to-white/5 rounded-2xl p-3.5 border border-amber-400/30 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-wider text-amber-300">
               Tổng sản lượng xuất
             </p>
-            <p className="text-xl font-black font-mono text-white mt-1 tabular-nums">
+            <p className="text-xl font-black font-mono text-amber-300 mt-1 tabular-nums">
               {formatNumber(overallProductSummary.quantity)}
             </p>
-            <p className="text-[10px] text-slate-400">{formatNumber(overallProductSummary.uniqueOrders)} đơn hàng</p>
+            <p className="text-[10px] text-slate-300 mt-0.5">{formatNumber(overallProductSummary.uniqueOrders)} đơn hàng</p>
           </div>
 
-          <div className="bg-white/5 rounded-2xl p-3.5 border border-white/10">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <div className="bg-gradient-to-br from-purple-500/20 via-indigo-500/15 to-white/5 rounded-2xl p-3.5 border border-purple-400/30 shadow-sm">
+            <p className="text-[10px] font-black uppercase tracking-wider text-purple-300">
               Độ phủ nhân sự
             </p>
             <p className="text-xl font-black font-mono text-white mt-1 tabular-nums">
               {overallProductSummary.activeReps} NV · {overallProductSummary.activeSupervisors} Sup
             </p>
-            <p className="text-[10px] text-slate-400">Có phát sinh doanh số</p>
+            <p className="text-[10px] text-purple-200 mt-0.5">Có phát sinh đơn</p>
           </div>
         </div>
       </div>
@@ -543,25 +547,28 @@ export const ProductDetailTab: React.FC = () => {
         {/* Header & Quick Action Buttons */}
         <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
-              <CheckSquare className="w-5 h-5 text-emerald-700" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-fuchsia-500 to-pink-600 text-white flex items-center justify-center font-bold shadow-xs">
+              <CheckSquare className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900">
-                Tích chọn sản phẩm cần xem ({selectedProductCodes.length}/{allProducts.length} SKU)
+              <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                <span>Tích chọn sản phẩm cần xem</span>
+                <span className="text-xs font-black text-fuchsia-700 bg-fuchsia-100 px-2 py-0.5 rounded-full border border-fuchsia-300">
+                  {selectedProductCodes.length}/{allProducts.length} SKU
+                </span>
               </h3>
-              <p className="text-[11px] text-slate-500">
-                Bấm vào từng ô để tích chọn/bỏ chọn, hoặc dùng các nút thao tác hàng loạt bên cạnh
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                Bấm vào từng ô để tích chọn/bỏ chọn, hoặc dùng các nút thao tác hàng loạt nhiều sản phẩm bên cạnh
               </p>
             </div>
           </div>
 
-          {/* Bulk select buttons */}
+          {/* Bulk select buttons with vibrant color personalities */}
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={selectAll}
-              className="px-3 py-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-colors shadow-2xs"
+              className="px-3 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 rounded-xl transition-all shadow-xs"
             >
               ✓ Chọn tất cả ({allProducts.length})
             </button>
@@ -575,28 +582,28 @@ export const ProductDetailTab: React.FC = () => {
             <button
               type="button"
               onClick={invertSelection}
-              className="px-3 py-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors shadow-2xs"
+              className="px-3 py-1.5 text-xs font-bold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-xl transition-colors shadow-2xs"
             >
-              Đảo ngược chọn
+              ⇄ Đảo ngược chọn
             </button>
             <button
               type="button"
               onClick={selectTop5}
-              className="px-3 py-1.5 text-xs font-bold text-slate-800 bg-white border border-slate-300 hover:bg-slate-50 rounded-xl transition-colors shadow-2xs"
+              className="px-3 py-1.5 text-xs font-black text-amber-950 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-600 rounded-xl transition-all shadow-xs border border-amber-300"
             >
-              Top 5 doanh số
+              🏆 Top 5 doanh số
             </button>
             <button
               type="button"
               onClick={selectTop10}
-              className="px-3 py-1.5 text-xs font-bold text-slate-800 bg-white border border-slate-300 hover:bg-slate-50 rounded-xl transition-colors shadow-2xs"
+              className="px-3 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 rounded-xl transition-all shadow-xs"
             >
               Top 10 doanh số
             </button>
             <button
               type="button"
               onClick={selectTop20}
-              className="px-3 py-1.5 text-xs font-bold text-slate-800 bg-white border border-slate-300 hover:bg-slate-50 rounded-xl transition-colors shadow-2xs"
+              className="px-3 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-700 hover:to-blue-800 rounded-xl transition-all shadow-xs"
             >
               Top 20 doanh số
             </button>
@@ -645,8 +652,8 @@ export const ProductDetailTab: React.FC = () => {
           )}
         </div>
 
-        {/* Interactive Checkbox Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-56 overflow-y-auto pr-1">
+        {/* Interactive Checkbox Grid with colorful checked state */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-60 overflow-y-auto pr-1">
           {filteredProductOptions.length === 0 ? (
             <div className="col-span-full py-8 text-center text-xs text-slate-400 font-medium">
               Không tìm thấy sản phẩm nào khớp với từ khóa "{productSearch}"
@@ -670,22 +677,24 @@ export const ProductDetailTab: React.FC = () => {
                   }}
                   className={`flex items-center justify-between p-3 rounded-2xl border cursor-pointer select-none transition-all duration-150 ${
                     isChecked
-                      ? 'border-emerald-500 bg-emerald-50/80 ring-2 ring-emerald-400 shadow-xs'
-                      : 'border-slate-200 bg-white hover:bg-slate-50/90 hover:border-slate-300'
+                      ? 'border-pink-500 bg-gradient-to-r from-pink-50/90 via-fuchsia-50/70 to-purple-50/80 ring-2 ring-pink-400 shadow-sm scale-[1.01]'
+                      : 'border-slate-200 bg-white hover:bg-pink-50/30 hover:border-pink-300 shadow-2xs'
                   }`}
                 >
                   <div className="truncate pr-2">
-                    <p className={`text-xs font-bold truncate ${isChecked ? 'text-emerald-950 font-extrabold' : 'text-slate-900'}`}>
+                    <p className={`text-xs font-bold truncate ${isChecked ? 'text-purple-950 font-black' : 'text-slate-900'}`}>
                       {p.name}
                     </p>
-                    <p className="text-[10px] text-slate-400 font-mono mt-0.5">{p.code}</p>
+                    <span className="text-[10px] text-fuchsia-700 bg-fuchsia-50 px-1.5 py-0.2 rounded font-mono font-medium border border-fuchsia-200/60 inline-block mt-0.5">
+                      {p.code}
+                    </span>
                   </div>
 
                   <div
                     className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 border transition-all ${
                       isChecked
-                        ? 'bg-emerald-600 border-emerald-600 text-white shadow-2xs'
-                        : 'border-slate-300 bg-white hover:border-slate-400'
+                        ? 'bg-gradient-to-br from-fuchsia-600 to-pink-600 border-fuchsia-600 text-white shadow-xs'
+                        : 'border-slate-300 bg-white hover:border-pink-400'
                     }`}
                   >
                     {isChecked ? (
@@ -703,13 +712,13 @@ export const ProductDetailTab: React.FC = () => {
         {/* Active Selection Strip */}
         <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 text-xs">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-700">Đang chọn ({selectedProductCodes.length}):</span>
+            <span className="font-black text-slate-800">Đang chọn ({selectedProductCodes.length}):</span>
             {selectedProductCodes.length === 0 ? (
-              <span className="text-rose-600 font-bold bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200">
+              <span className="text-rose-600 font-bold bg-rose-50 px-2.5 py-0.5 rounded-lg border border-rose-200">
                 ⚠️ Chưa chọn sản phẩm nào. Vui lòng tích chọn ở trên!
               </span>
             ) : (
-              <span className="text-slate-500">
+              <span className="text-slate-600 font-medium">
                 {selectedProductCodes.length > 5
                   ? `${selectedProductCodes.slice(0, 5).join(', ')} ... và ${selectedProductCodes.length - 5} sản phẩm khác`
                   : selectedProductCodes.join(', ')}
@@ -721,25 +730,25 @@ export const ProductDetailTab: React.FC = () => {
             <button
               type="button"
               onClick={deselectAll}
-              className="text-rose-600 hover:text-rose-700 font-bold hover:underline"
+              className="text-rose-600 hover:text-rose-700 font-black hover:underline text-xs"
             >
-              Xóa tất cả lựa chọn
+              ✕ Xóa tất cả lựa chọn
             </button>
           )}
         </div>
       </div>
 
       {/* Segmented View Switcher: Theo Giám sát | Theo Nhân viên | Danh sách Nhà thuốc */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs space-y-5">
+      <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-slate-100">
-          <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-2xl border border-slate-200/80">
+          <div className="flex items-center gap-1.5 p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200/90 shadow-inner">
             <button
               type="button"
               onClick={() => setActiveViewTab('supervisor')}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 activeViewTab === 'supervisor'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-gradient-to-r from-fuchsia-600 via-pink-600 to-purple-700 text-white shadow-md shadow-pink-500/25 border border-white/20'
+                  : 'text-slate-600 hover:text-fuchsia-700 hover:bg-white/80'
               }`}
             >
               <Users2 className="w-3.5 h-3.5" />
@@ -751,8 +760,8 @@ export const ProductDetailTab: React.FC = () => {
               onClick={() => setActiveViewTab('staff')}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 activeViewTab === 'staff'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-gradient-to-r from-fuchsia-600 via-pink-600 to-purple-700 text-white shadow-md shadow-pink-500/25 border border-white/20'
+                  : 'text-slate-600 hover:text-fuchsia-700 hover:bg-white/80'
               }`}
             >
               <UserCheck className="w-3.5 h-3.5" />
@@ -764,8 +773,8 @@ export const ProductDetailTab: React.FC = () => {
               onClick={() => setActiveViewTab('pharmacies')}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 activeViewTab === 'pharmacies'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-gradient-to-r from-fuchsia-600 via-pink-600 to-purple-700 text-white shadow-md shadow-pink-500/25 border border-white/20'
+                  : 'text-slate-600 hover:text-fuchsia-700 hover:bg-white/80'
               }`}
             >
               <Building2 className="w-3.5 h-3.5" />
@@ -774,7 +783,7 @@ export const ProductDetailTab: React.FC = () => {
           </div>
 
           <div className="text-xs text-slate-500 font-medium">
-            Số lượng nhà thuốc tính chuẩn <span className="font-bold text-emerald-800">không trùng lặp</span>
+            Số lượng nhà thuốc tính chuẩn <span className="font-extrabold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200">không trùng lặp</span>
           </div>
         </div>
 
@@ -788,7 +797,7 @@ export const ProductDetailTab: React.FC = () => {
             <button
               type="button"
               onClick={selectTop5}
-              className="mt-2 px-4 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-xl transition-colors shadow-xs"
+              className="mt-2 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-fuchsia-600 to-pink-600 hover:from-fuchsia-700 hover:to-pink-700 rounded-xl transition-all shadow-md shadow-pink-500/20"
             >
               Chọn nhanh Top 5 sản phẩm
             </button>
@@ -798,21 +807,21 @@ export const ProductDetailTab: React.FC = () => {
             {/* View 1: Breakdown by SUPERVISOR */}
             {activeViewTab === 'supervisor' && (
               <div className="space-y-4">
-                <div className="border border-slate-200 rounded-2xl overflow-hidden max-h-[520px] overflow-y-auto">
+                <div className="border border-slate-200 rounded-2xl overflow-hidden max-h-[520px] overflow-y-auto shadow-inner">
                   <table className="w-full text-left text-xs whitespace-nowrap">
-                    <thead className="bg-slate-100/90 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 backdrop-blur-xs">
+                    <thead className="bg-gradient-to-r from-slate-950 via-purple-950 to-slate-900 text-slate-200 font-bold sticky top-0 z-10 border-b border-purple-900">
                       <tr>
-                        <th className="py-3 px-3.5 w-12 text-center">#</th>
-                        <th className="py-3 px-4">Giám sát phụ trách</th>
-                        <th className="py-3 px-4">Khu vực / Đơn vị</th>
-                        <th className="py-3 px-4 text-center">Số NV có bán</th>
-                        <th className="py-3 px-4 text-right">Nhà thuốc lấy hàng (Ko trùng)</th>
-                        <th className="py-3 px-4 text-right">Số lượng sản phẩm</th>
-                        <th className="py-3 px-4 text-right">Doanh số sau VAT</th>
-                        <th className="py-3 px-4 text-right">Tỷ trọng đóng góp</th>
+                        <th className="py-3 px-3.5 w-12 text-center text-slate-400">#</th>
+                        <th className="py-3 px-4 text-pink-300">Giám sát phụ trách</th>
+                        <th className="py-3 px-4 text-slate-300">Khu vực / Đơn vị</th>
+                        <th className="py-3 px-4 text-center text-blue-300">Số NV có bán</th>
+                        <th className="py-3 px-4 text-right text-teal-300">Nhà thuốc lấy hàng (Ko trùng)</th>
+                        <th className="py-3 px-4 text-right text-amber-300">Số lượng sản phẩm</th>
+                        <th className="py-3 px-4 text-right text-emerald-300">Doanh số sau VAT</th>
+                        <th className="py-3 px-4 text-right text-pink-300">Tỷ trọng đóng góp</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 text-slate-800">
+                    <tbody className="divide-y divide-slate-100 text-slate-800 bg-white">
                       {supervisorBreakdown.list.length === 0 ? (
                         <tr>
                           <td colSpan={8} className="py-10 text-center text-slate-400 font-medium">
@@ -825,29 +834,33 @@ export const ProductDetailTab: React.FC = () => {
                             <td className="py-3 px-3.5 text-center text-slate-400 font-mono text-[11px]">
                               {idx + 1}
                             </td>
-                            <td className="py-3 px-4 font-bold text-slate-900 text-sm">
+                            <td className="py-3 px-4 font-bold text-slate-950 text-sm">
                               {s.supervisor}
                             </td>
                             <td className="py-3 px-4 text-slate-600 font-medium">
-                              <p>{s.areaDirector}</p>
+                              <p className="font-bold text-slate-800">{s.areaDirector}</p>
                               <p className="text-[10px] text-slate-400">{s.unitDirector}</p>
                             </td>
                             <td className="py-3 px-4 text-center">
-                              <span className="font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded-md">
+                              <span className="font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">
                                 {s.activeRepsCount} NV
                               </span>
                             </td>
-                            <td className="py-3 px-4 text-right font-mono font-bold text-emerald-800 tabular-nums">
-                              {formatNumber(s.uniquePartnersCount)} Nhà thuốc
+                            <td className="py-3 px-4 text-right font-mono font-bold tabular-nums">
+                              <span className="text-teal-800 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200 inline-block">
+                                {formatNumber(s.uniquePartnersCount)} Nhà thuốc
+                              </span>
                             </td>
-                            <td className="py-3 px-4 text-right font-mono font-semibold text-slate-900 tabular-nums">
+                            <td className="py-3 px-4 text-right font-mono font-bold text-slate-900 tabular-nums">
                               {formatNumber(s.qty)}
                             </td>
-                            <td className="py-3 px-4 text-right font-mono font-black text-slate-950 tabular-nums">
-                              {formatVND(s.revenue)}
+                            <td className="py-3 px-4 text-right font-mono font-black tabular-nums">
+                              <span className="text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 inline-block">
+                                {formatVND(s.revenue)}
+                              </span>
                             </td>
                             <td className="py-3 px-4 text-right">
-                              <span className="font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md">
+                              <span className="font-black text-pink-800 bg-pink-50 px-2 py-0.5 rounded-md border border-pink-200">
                                 {s.share.toFixed(1).replace('.', ',')}%
                               </span>
                             </td>
@@ -871,30 +884,30 @@ export const ProductDetailTab: React.FC = () => {
                       placeholder="Tìm nhân viên, giám sát..."
                       value={staffSearch}
                       onChange={(e) => setStaffSearch(e.target.value)}
-                      className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 w-64 font-medium"
+                      className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 w-64 font-medium"
                     />
                   </div>
 
                   <span className="text-xs text-slate-500 font-medium">
-                    {displayedStaff.length} Nhân viên có phát sinh doanh số sản phẩm này
+                    <span className="font-black text-purple-900">{displayedStaff.length}</span> Nhân viên có phát sinh doanh số sản phẩm này
                   </span>
                 </div>
 
-                <div className="border border-slate-200 rounded-2xl overflow-hidden max-h-[520px] overflow-y-auto">
+                <div className="border border-slate-200 rounded-2xl overflow-hidden max-h-[520px] overflow-y-auto shadow-inner">
                   <table className="w-full text-left text-xs whitespace-nowrap">
-                    <thead className="bg-slate-100/90 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 backdrop-blur-xs">
+                    <thead className="bg-gradient-to-r from-slate-950 via-purple-950 to-slate-900 text-slate-200 font-bold sticky top-0 z-10 border-b border-purple-900">
                       <tr>
-                        <th className="py-3 px-3.5 w-12 text-center">#</th>
-                        <th className="py-3 px-4">Nhân viên bán hàng</th>
-                        <th className="py-3 px-4">Giám sát phụ trách</th>
-                        <th className="py-3 px-4">Trưởng nhóm</th>
-                        <th className="py-3 px-4 text-right">Nhà thuốc lấy hàng (Ko trùng)</th>
-                        <th className="py-3 px-4 text-right">Số lượng sản phẩm</th>
-                        <th className="py-3 px-4 text-right">Doanh số sau VAT</th>
-                        <th className="py-3 px-4 text-right">Tỷ trọng</th>
+                        <th className="py-3 px-3.5 w-12 text-center text-slate-400">#</th>
+                        <th className="py-3 px-4 text-pink-300">Nhân viên bán hàng</th>
+                        <th className="py-3 px-4 text-cyan-300">Giám sát phụ trách</th>
+                        <th className="py-3 px-4 text-slate-300">Trưởng nhóm</th>
+                        <th className="py-3 px-4 text-right text-teal-300">Nhà thuốc lấy hàng (Ko trùng)</th>
+                        <th className="py-3 px-4 text-right text-amber-300">Số lượng sản phẩm</th>
+                        <th className="py-3 px-4 text-right text-emerald-300">Doanh số sau VAT</th>
+                        <th className="py-3 px-4 text-right text-fuchsia-300">Tỷ trọng</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 text-slate-800">
+                    <tbody className="divide-y divide-slate-100 text-slate-800 bg-white">
                       {displayedStaff.length === 0 ? (
                         <tr>
                           <td colSpan={8} className="py-10 text-center text-slate-400 font-medium">
@@ -907,26 +920,32 @@ export const ProductDetailTab: React.FC = () => {
                             <td className="py-2.5 px-3.5 text-center text-slate-400 font-mono text-[11px]">
                               {idx + 1}
                             </td>
-                            <td className="py-2.5 px-4 font-bold text-slate-900">
+                            <td className="py-2.5 px-4 font-bold text-slate-950">
                               {r.rep}
                             </td>
-                            <td className="py-2.5 px-4 font-medium text-slate-700">
-                              {r.supervisor}
+                            <td className="py-2.5 px-4 font-medium">
+                              <span className="text-cyan-900 bg-cyan-50 px-2 py-0.5 rounded-md font-semibold border border-cyan-200">
+                                {r.supervisor}
+                              </span>
                             </td>
                             <td className="py-2.5 px-4 text-slate-500">
                               {r.teamLead || '—'}
                             </td>
-                            <td className="py-2.5 px-4 text-right font-mono font-bold text-emerald-800 tabular-nums">
-                              {formatNumber(r.uniquePartnersCount)} Nhà thuốc
+                            <td className="py-2.5 px-4 text-right font-mono font-bold tabular-nums">
+                              <span className="text-teal-800 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200 inline-block">
+                                {formatNumber(r.uniquePartnersCount)} Nhà thuốc
+                              </span>
                             </td>
                             <td className="py-2.5 px-4 text-right font-mono font-semibold text-slate-900 tabular-nums">
                               {formatNumber(r.qty)}
                             </td>
-                            <td className="py-2.5 px-4 text-right font-mono font-black text-slate-950 tabular-nums">
-                              {formatVND(r.revenue)}
+                            <td className="py-2.5 px-4 text-right font-mono font-black tabular-nums">
+                              <span className="text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 inline-block">
+                                {formatVND(r.revenue)}
+                              </span>
                             </td>
                             <td className="py-2.5 px-4 text-right">
-                              <span className="font-bold text-slate-700">
+                              <span className="font-bold text-purple-800 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-200">
                                 {r.share.toFixed(1).replace('.', ',')}%
                               </span>
                             </td>
@@ -950,31 +969,31 @@ export const ProductDetailTab: React.FC = () => {
                       placeholder="Tìm nhà thuốc, tỉnh thành, nhân viên..."
                       value={pharmacySearch}
                       onChange={(e) => setPharmacySearch(e.target.value)}
-                      className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 w-72 font-medium"
+                      className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 w-72 font-medium"
                     />
                   </div>
 
                   <span className="text-xs text-slate-500 font-medium">
-                    {displayedPharmacies.length} Nhà thuốc duy nhất đã nhập các sản phẩm này
+                    <span className="font-black text-teal-900">{displayedPharmacies.length}</span> Nhà thuốc duy nhất đã nhập các sản phẩm này
                   </span>
                 </div>
 
-                <div className="border border-slate-200 rounded-2xl overflow-x-auto max-h-[520px] overflow-y-auto">
+                <div className="border border-slate-200 rounded-2xl overflow-x-auto max-h-[520px] overflow-y-auto shadow-inner">
                   <table className="w-full text-left text-xs whitespace-nowrap">
-                    <thead className="bg-slate-100/90 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 backdrop-blur-xs">
+                    <thead className="bg-gradient-to-r from-slate-950 via-purple-950 to-slate-900 text-slate-200 font-bold sticky top-0 z-10 border-b border-purple-900">
                       <tr>
-                        <th className="py-3 px-3.5 w-12 text-center">#</th>
-                        <th className="py-3 px-4">Mã nhà thuốc</th>
-                        <th className="py-3 px-4">Tên Nhà thuốc</th>
-                        <th className="py-3 px-4">Tỉnh / Thành</th>
-                        <th className="py-3 px-4">Phường / Xã</th>
-                        <th className="py-3 px-4 text-right">Số lượng lấy</th>
-                        <th className="py-3 px-4 text-right">Doanh số sau VAT</th>
-                        <th className="py-3 px-4">Nhân viên phụ trách</th>
-                        <th className="py-3 px-4">Giám sát</th>
+                        <th className="py-3 px-3.5 w-12 text-center text-slate-400">#</th>
+                        <th className="py-3 px-4 text-emerald-300">Mã nhà thuốc</th>
+                        <th className="py-3 px-4 text-white">Tên Nhà thuốc</th>
+                        <th className="py-3 px-4 text-sky-300">Tỉnh / Thành</th>
+                        <th className="py-3 px-4 text-slate-300">Phường / Xã</th>
+                        <th className="py-3 px-4 text-right text-amber-300">Số lượng lấy</th>
+                        <th className="py-3 px-4 text-right text-emerald-300">Doanh số sau VAT</th>
+                        <th className="py-3 px-4 text-purple-300">Nhân viên phụ trách</th>
+                        <th className="py-3 px-4 text-cyan-300">Giám sát</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 text-slate-800">
+                    <tbody className="divide-y divide-slate-100 text-slate-800 bg-white">
                       {displayedPharmacies.length === 0 ? (
                         <tr>
                           <td colSpan={9} className="py-10 text-center text-slate-400 font-medium">
@@ -987,28 +1006,36 @@ export const ProductDetailTab: React.FC = () => {
                             <td className="py-2.5 px-3.5 text-center text-slate-400 font-mono text-[11px]">
                               {idx + 1}
                             </td>
-                            <td className="py-2.5 px-4 font-mono font-bold text-emerald-800">
-                              {p.partnerId}
+                            <td className="py-2.5 px-4 font-mono font-bold">
+                              <span className="text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/80">
+                                {p.partnerId}
+                              </span>
                             </td>
-                            <td className="py-2.5 px-4 font-bold text-slate-900">
+                            <td className="py-2.5 px-4 font-bold text-slate-950">
                               {p.partnerName}
                             </td>
-                            <td className="py-2.5 px-4 font-medium text-slate-700">
-                              {p.province}
+                            <td className="py-2.5 px-4 font-semibold">
+                              <span className="text-sky-800 bg-sky-50 px-2 py-0.5 rounded-md border border-sky-200/80">
+                                {p.province}
+                              </span>
                             </td>
                             <td className="py-2.5 px-4 text-slate-500 text-[11px]">
                               {p.ward}
                             </td>
-                            <td className="py-2.5 px-4 text-right font-mono font-bold text-slate-900 tabular-nums">
-                              {formatNumber(p.qty)}
+                            <td className="py-2.5 px-4 text-right font-mono font-bold tabular-nums">
+                              <span className="text-amber-900 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/80">
+                                {formatNumber(p.qty)}
+                              </span>
                             </td>
-                            <td className="py-2.5 px-4 text-right font-mono font-black text-emerald-950 tabular-nums">
-                              {formatVND(p.revenue)}
+                            <td className="py-2.5 px-4 text-right font-mono font-black tabular-nums">
+                              <span className="text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200/80 inline-block">
+                                {formatVND(p.revenue)}
+                              </span>
                             </td>
-                            <td className="py-2.5 px-4 text-slate-700 font-medium truncate max-w-[150px]">
+                            <td className="py-2.5 px-4 font-semibold text-purple-900 truncate max-w-[150px]">
                               {p.reps}
                             </td>
-                            <td className="py-2.5 px-4 text-slate-500 truncate max-w-[150px]">
+                            <td className="py-2.5 px-4 text-cyan-900 font-medium truncate max-w-[150px]">
                               {p.supervisors}
                             </td>
                           </tr>
@@ -1024,19 +1051,21 @@ export const ProductDetailTab: React.FC = () => {
       </div>
 
       {/* Review Notes Section for Product Strategy */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs space-y-3">
+      <div className="bg-gradient-to-br from-fuchsia-50/40 via-white to-purple-50/40 rounded-3xl p-6 border border-fuchsia-200/90 shadow-sm space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ClipboardPen className="w-4 h-4 text-emerald-600" />
-            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-fuchsia-600 to-pink-600 text-white flex items-center justify-center font-bold shadow-xs">
+              <ClipboardPen className="w-4 h-4" />
+            </div>
+            <h4 className="text-xs font-black text-fuchsia-950 uppercase tracking-wider">
               Biên bản Chiến Lược & Kế Hoạch Đẩy Hàng Theo Sản Phẩm
             </h4>
           </div>
 
           {isSavedNote && (
-            <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md flex items-center gap-1">
+            <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-lg flex items-center gap-1 shadow-2xs">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              Đã lưu biên bản
+              Đã lưu biên bản thành công
             </span>
           )}
         </div>
@@ -1046,14 +1075,14 @@ export const ProductDetailTab: React.FC = () => {
           placeholder="Nhập ghi chú chiến lược: Mục tiêu mở rộng độ phủ nhà thuốc, chương trình khuyến mãi theo combo, chỉ tiêu số lượng giao cho từng Giám sát và Nhân viên..."
           value={productReviewNote}
           onChange={(e) => setProductReviewNote(e.target.value)}
-          className="w-full p-3.5 text-xs bg-slate-50 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-slate-800 font-medium"
+          className="w-full p-3.5 text-xs bg-white rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/20 focus:border-fuchsia-500 text-slate-800 font-medium shadow-inner"
         />
 
         <div className="flex justify-end">
           <button
             type="button"
             onClick={handleSaveNote}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-colors shadow-2xs"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-fuchsia-600 via-pink-600 to-purple-600 hover:from-fuchsia-700 hover:to-purple-700 rounded-xl transition-all shadow-md shadow-fuchsia-600/20"
           >
             <Save className="w-3.5 h-3.5" />
             <span>Lưu ghi chú chiến lược sản phẩm</span>
